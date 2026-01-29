@@ -1,0 +1,30 @@
+{
+	"name": "equail-api",
+	"version": "1.0.0",
+	"description": "The main backend api for equail.",
+	"main": "index.js",
+	"type": "module",
+	"imports": {
+		"#*": "./src/*"
+	},
+	"scripts": {
+		"dev": "tsx --watch --env-file .env src/index.ts",
+		"start": "node --env-file .env dist/index.js",
+		"build": "tsc",
+		"format": "prettier --write ."
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"express": "^5.2.1"
+	},
+	"devDependencies": {
+		"@tsconfig/node22": "^22.0.5",
+		"@types/express": "^5.0.6",
+		"@types/node": "^25.1.0",
+		"prettier": "^3.8.1",
+		"tsx": "^4.21.0",
+		"typescript": "^5.9.3"
+	}
+}

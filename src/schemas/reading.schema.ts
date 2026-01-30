@@ -11,15 +11,17 @@ const ReadingSchema = z.object({
     updatedAt: z.coerce.date(),
 })
 
+const ReadingQuerySchema = ReadingSchema.partial()
 const ReadingCreateSchema = ReadingSchema.pick({ name: true, unit: true, value: true })
 const ReadingUpdateSchema = ReadingSchema.pick({ name: true, unit: true, value: true }).partial()
 
 //
 
 type ReadingSchema = z.infer<typeof ReadingSchema>
+type ReadingQuerySchema = z.infer<typeof ReadingQuerySchema>
 type ReadingCreateSchema = z.infer<typeof ReadingCreateSchema>
 type ReadingUpdateSchema = z.infer<typeof ReadingUpdateSchema>
 
 //
 
-export { ReadingSchema, ReadingCreateSchema, ReadingUpdateSchema }
+export { ReadingSchema, ReadingQuerySchema, ReadingCreateSchema, ReadingUpdateSchema }

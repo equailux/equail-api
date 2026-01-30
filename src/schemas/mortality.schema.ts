@@ -10,15 +10,17 @@ const MortalitySchema = z.object({
     updatedAt: z.coerce.date(),
 })
 
+const MortalityQuerySchema = MortalitySchema.partial()
 const MortalityCreateSchema = MortalitySchema.pick({ count: true, date: true })
 const MortalityUpdateSchema = MortalitySchema.pick({ count: true, date: true }).partial()
 
 //
 
 type MortalitySchema = z.infer<typeof MortalitySchema>
+type MortalityQuerySchema = z.infer<typeof MortalityQuerySchema>
 type MortalityCreateSchema = z.infer<typeof MortalityCreateSchema>
 type MortalityUpdateSchema = z.infer<typeof MortalityUpdateSchema>
 
 //
 
-export { MortalitySchema, MortalityCreateSchema, MortalityUpdateSchema }
+export { MortalitySchema, MortalityQuerySchema, MortalityCreateSchema, MortalityUpdateSchema }

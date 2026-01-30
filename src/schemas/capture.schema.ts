@@ -11,15 +11,17 @@ const CaptureSchema = z.object({
     updatedAt: z.coerce.date(),
 })
 
-const CaptureCreateSchema = CaptureSchema.pick({ eggs: true, camera: true })
-const CaptureUpdateSchema = CaptureSchema.pick({ eggs: true, camera: true }).partial()
+const CaptureQuerySchema = CaptureSchema.partial()
+const CaptureCreateSchema = CaptureSchema.pick({ camera: true })
+const CaptureUpdateSchema = CaptureSchema.pick({ camera: true }).partial()
 
 //
 
 type CaptureSchema = z.infer<typeof CaptureSchema>
+type CaptureQuerySchema = z.infer<typeof CaptureQuerySchema>
 type CaptureCreateSchema = z.infer<typeof CaptureCreateSchema>
 type CaptureUpdateSchema = z.infer<typeof CaptureUpdateSchema>
 
 //
 
-export { CaptureSchema, CaptureCreateSchema, CaptureUpdateSchema }
+export { CaptureSchema, CaptureQuerySchema, CaptureCreateSchema, CaptureUpdateSchema }

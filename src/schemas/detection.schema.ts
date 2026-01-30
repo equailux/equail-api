@@ -15,6 +15,8 @@ const DetectionSchema = z.object({
     updatedAt: z.coerce.date(),
 })
 
+const DetectionQuerySchema = DetectionSchema.partial()
+
 const DetectionCreateSchema = DetectionSchema.pick({
     x1: true, 
     y1: true, 
@@ -36,9 +38,10 @@ const DetectionUpdateSchema = DetectionSchema.pick({
 //
 
 type DetectionSchema = z.infer<typeof DetectionSchema>
+type DetectionQuerySchema = z.infer<typeof DetectionQuerySchema>
 type DetectionCreateSchema = z.infer<typeof DetectionCreateSchema>
 type DetectionUpdateSchema = z.infer<typeof DetectionUpdateSchema>
 
 //
 
-export { DetectionSchema, DetectionCreateSchema, DetectionUpdateSchema }
+export { DetectionSchema, DetectionQuerySchema, DetectionCreateSchema, DetectionUpdateSchema }

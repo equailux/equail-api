@@ -8,27 +8,32 @@ import type {
 
 //
 
-class Egg extends Model<InferAttributes<Egg>, InferCreationAttributes<Egg>> {
+class Capture extends Model<InferAttributes<Capture>, InferCreationAttributes<Capture>> {
     declare id: CreationOptional<number>
-    declare count: number
+    declare eggs: number
     declare image: string
+    declare camera: string
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
 }
 
 //
 
-const eggAttributes: ModelAttributes<Egg, InferAttributes<Egg>> = {
+const eggAttributes: ModelAttributes<Capture, InferAttributes<Capture>> = {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
     },
-    count: {
+    eggs: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
     image: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    camera: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -46,7 +51,7 @@ const eggAttributes: ModelAttributes<Egg, InferAttributes<Egg>> = {
 
 //
 
-const eggOptions = (sequelize: Sequelize): InitOptions<Egg> => ({
+const eggOptions = (sequelize: Sequelize): InitOptions<Capture> => ({
     sequelize,
     tableName: "eggs",
     timestamps: true,
@@ -54,4 +59,4 @@ const eggOptions = (sequelize: Sequelize): InitOptions<Egg> => ({
 
 //
 
-export { Egg, eggAttributes, eggOptions }
+export { Capture, eggAttributes, eggOptions }

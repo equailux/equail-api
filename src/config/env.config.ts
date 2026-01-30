@@ -4,6 +4,11 @@
 const env = {
     port: Number(process.env.PORT),
     host: process.env.HOST || "",
+    admin: {
+        name: process.env.ADMIN_NAME || "",
+        email: process.env.ADMIN_EMAIL || "",
+        password: process.env.ADMIN_PASSWORD || "",
+    },
     database: {
         user: process.env.DATABASE_USER || "",
         pass: process.env.DATABASE_PASS || "",

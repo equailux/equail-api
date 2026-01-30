@@ -19,7 +19,7 @@ class Capture extends Model<InferAttributes<Capture>, InferCreationAttributes<Ca
 
 //
 
-const eggAttributes: ModelAttributes<Capture, InferAttributes<Capture>> = {
+const captureAttributes: ModelAttributes<Capture, InferAttributes<Capture>> = {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -51,12 +51,12 @@ const eggAttributes: ModelAttributes<Capture, InferAttributes<Capture>> = {
 
 //
 
-const eggOptions = (sequelize: Sequelize): InitOptions<Capture> => ({
+const captureOptions = (sequelize: Sequelize): InitOptions<Capture> => ({
     sequelize,
-    tableName: "eggs",
+    tableName: "captures",
     timestamps: true,
 })
 
 //
 
-export { Capture, eggAttributes, eggOptions }
+export { Capture, captureAttributes, captureOptions }

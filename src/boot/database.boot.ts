@@ -1,0 +1,33 @@
+import env from "../config/env.config.js"
+import { Capture, captureAttributes, captureOptions, } from "../models/capture.model.js"
+import { Detection, detectionAttributes, detectionOptions } from "../models/detection.model.js"
+import { Mortality, mortalityAttributes, mortalityOptions } from "../models/mortality.model.js"
+import { Reading, readingAttributes, readingOptions } from "../models/reading.model.js"
+import { Sequelize } from "sequelize"
+
+//
+
+const boot = async () => {
+    const { user, pass, host, port, name, dialect } = env.database
+    const url = `${dialect}://${user}:${pass}@${host}:${port}`
+
+    const rawsqlize = new Sequelize(url, { logging: false })
+    await rawsqlize.query(`CREATE DATABASE IF NOT EXISTS \`${name}\`;`)
+    const sequelize = new Sequelize(`${url}/${name}`, { logging: false })
+
+    Capture.init(captureAttributes, captureOptions(sequelize))
+    Detection.init(detectionAttributes, detectionOptions(sequelize))
+    Mortality.init(mortalityAttributes, mortalityOptions(sequelize))
+    Reading.init(readingAttributes, readingOptions(sequelize))
+
+    Capture.hasMany(Detection, { foreignKey: "captureId", onDelete: "CASCADE" })
+    Detection.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
+
+    await sequelize.authenticate()
+    const { sync, alter, force } = env.database
+    if (sync) await sequelize.sync({ alter, force })
+}
+
+//
+
+export default { boot }

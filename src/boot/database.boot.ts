@@ -1,9 +1,10 @@
 import env from "../config/env.config.js"
+import { Sequelize } from "sequelize"
 import { Capture, captureAttributes, captureOptions, } from "../models/capture.model.js"
 import { Detection, detectionAttributes, detectionOptions } from "../models/detection.model.js"
 import { Mortality, mortalityAttributes, mortalityOptions } from "../models/mortality.model.js"
 import { Reading, readingAttributes, readingOptions } from "../models/reading.model.js"
-import { Sequelize } from "sequelize"
+import { User, userAttributes, userOptions } from "src/models/user.model.js"
 
 //
 
@@ -19,6 +20,7 @@ const boot = async () => {
     Detection.init(detectionAttributes, detectionOptions(sequelize))
     Mortality.init(mortalityAttributes, mortalityOptions(sequelize))
     Reading.init(readingAttributes, readingOptions(sequelize))
+    User.init(userAttributes, userOptions(sequelize))
 
     Capture.hasMany(Detection, { foreignKey: "captureId", onDelete: "CASCADE" })
     Detection.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })

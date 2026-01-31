@@ -1,0 +1,21 @@
+import jwt from "jsonwebtoken"
+import { type RequestHandler } from "express";
+import env from "../config/env.config.js";
+
+//
+
+const requireAuthToken: RequestHandler = async (req, res, next) => {
+    const token = (req.headers.authorization || "").split(" ").at(1)
+    if (!token) return res.status(401).send("Authorization is required.")
+
+    await Promise
+        .resolve()
+        .then(() => jwt.verify(token, env.jwt.signInSecret))
+        .then((res) => (req as any).payload = res)
+        .then(() => next())
+        .catch(() => res.status(401).send("Invalid authorization provided."))
+}
+
+//
+
+export default { requireAuthToken }

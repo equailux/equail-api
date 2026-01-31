@@ -4,7 +4,7 @@ import { Capture, captureAttributes, captureOptions, } from "../models/capture.m
 import { Detection, detectionAttributes, detectionOptions } from "../models/detection.model.js"
 import { Mortality, mortalityAttributes, mortalityOptions } from "../models/mortality.model.js"
 import { Reading, readingAttributes, readingOptions } from "../models/reading.model.js"
-import { User, userAttributes, userOptions } from "src/models/user.model.js"
+import { User, userAttributes, userOptions } from "../models/user.model.js"
 
 //
 

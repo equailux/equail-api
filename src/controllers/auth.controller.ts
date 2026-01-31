@@ -28,18 +28,21 @@ const signIn: RequestHandler = async (req, res, next) => {
 
     const payload = UserSafeSchema.parse(user)
     const token = jwt.sign(payload, env.jwt.signInSecret, { expiresIn: "1Hour" })
-    res.send({ user, token })
+    res.send({ user: payload, token })
 }
 
 const signOut: RequestHandler = async (req, res, next) => {
+    if (!req.user) return res.status(401).send("Authorization is required.")
     res.status(204).send("Kindly remove credentials.")
 }
 
 const changeName: RequestHandler = async (req, res, next) => {
+    if (!req.user) return res.status(401).send("Authorization is required.")
+
     const { data, error, success } = UserChangeNameSchema.safeParse(req.body)
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
 
-    const [count] = await User.update(data, { where: {} })
+    const [count] = await User.update(data, { where: { id: req.user.id } })
     if (count <= 0) return res.status(404).send("User not found.")
     res.status(204).send("User name changed.")
 }
@@ -51,7 +54,7 @@ const resetPassword: RequestHandler = async (req, res, next) => {
     const user = await User.findOne({ where: { email: data.email }, raw: true })
     if (!user) return res.status(400).send("Incorrect credentials provided.")
 
-    const digits = (Math.random() * 999999).toString().padStart(6, "0")
+    const digits = (Math.random() * 999999).toFixed(0).padStart(6, "0")
     const expiry = Date.now() + 15 * 60 * 1000
     await Otp.create({ digits, revoked: false, expiredAt: new Date(expiry) })
     
@@ -63,8 +66,6 @@ const resetPassword: RequestHandler = async (req, res, next) => {
 }
 
 const changePassword: RequestHandler = async (req, res, next) => {
-    if (!req.user) return res.status(401).send("Authentication is required.")
-
     const { data, error, success } = UserChangePasswordSchema.and(OtpDigitsSchema).safeParse(req.body)
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
 
@@ -76,7 +77,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
     if (otp.revoked) return res.status(400).send("Otp has already been used.")
 
     const password = await bcrypt.hash(data.password, 10)
-    const [count] = await User.update({ password }, { where: { id: req.user.id } })
+    const [count] = await User.update({ password }, { where: { email: data.email } })
     await otp.update({ revoked: true })
     
     if (count <= 0) return res.status(404).send("User not found.")

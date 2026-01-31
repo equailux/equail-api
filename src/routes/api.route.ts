@@ -7,6 +7,7 @@ import jwtMiddleware from "../middlewares/jwt.middleware.js"
 //
 
 const router = express.Router()
+router.use(express.json())
 router.use(jwtMiddleware.requireAuthToken)
 router.use("/capture", captureRoute.router)
 router.use("/mortality", mortalityRoute.router)

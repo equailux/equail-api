@@ -5,6 +5,7 @@ import { Detection, detectionAttributes, detectionOptions } from "../models/dete
 import { Mortality, mortalityAttributes, mortalityOptions } from "../models/mortality.model.js"
 import { Reading, readingAttributes, readingOptions } from "../models/reading.model.js"
 import { User, userAttributes, userOptions } from "../models/user.model.js"
+import { Otp, otpAttributes, otpOptions } from "src/models/otp.model.js"
 
 //
 
@@ -19,6 +20,7 @@ const boot = async () => {
     Capture.init(captureAttributes, captureOptions(sequelize))
     Detection.init(detectionAttributes, detectionOptions(sequelize))
     Mortality.init(mortalityAttributes, mortalityOptions(sequelize))
+    Otp.init(otpAttributes, otpOptions(sequelize))
     Reading.init(readingAttributes, readingOptions(sequelize))
     User.init(userAttributes, userOptions(sequelize))
 

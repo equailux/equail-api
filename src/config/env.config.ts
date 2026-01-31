@@ -6,6 +6,7 @@ const env = {
     host: process.env.HOST || "",
     dev: { email: process.env.DEV_EMAIL || "" },
     jwt: { signInSecret: process.env.JWT_SIGN_IN_SECRET || "" },
+    proxy: { url: process.env.PROXY_URL || "" },
     admin: {
         name: process.env.ADMIN_NAME || "",
         email: process.env.ADMIN_EMAIL || "",

@@ -1,4 +1,4 @@
-import { UserSafeSchema } from "src/schemas/user.schema.ts";
+import { UserSafeSchema } from "../schemas/user.schema.ts";
 
 //
 
@@ -12,4 +12,4 @@ declare global {
 
 //
 
-export {}
+export { }

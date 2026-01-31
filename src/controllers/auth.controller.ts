@@ -1,11 +1,11 @@
 import env from "../config/env.config.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-import mailService from "src/services/mail.service.js";
-import { Otp } from "src/models/otp.model.js";
+import mailService from "../services/mail.service.js";
+import { Otp } from "../models/otp.model.js";
 import { User } from "../models/user.model.js";
 import { RequestHandler } from "express";
-import { OtpDigitsSchema } from "src/schemas/otp.schema.js";
+import { OtpDigitsSchema } from "../schemas/otp.schema.js";
 import {
     UserChangeNameSchema,
     UserChangePasswordSchema,
@@ -57,11 +57,11 @@ const resetPassword: RequestHandler = async (req, res, next) => {
     const digits = (Math.random() * 999999).toFixed(0).padStart(6, "0")
     const expiry = Date.now() + 15 * 60 * 1000
     await Otp.create({ digits, revoked: false, expiredAt: new Date(expiry) })
-    
+
     const text = `Your otp is ${digits}.`
     const subject = "OTP - E-Quail"
     await mailService.sendMail({ to: user.email, subject, text })
-    
+
     res.status(204).send("Kindly check your email for 6-digit otp.")
 }
 
@@ -71,7 +71,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
 
     const otp = await Otp.findOne({ where: { digits: data.digits } })
     if (!otp) return res.status(400).send("Incorrect otp provided.")
-    
+
     const expired = Date.now() > new Date(otp.expiredAt).getTime()
     if (expired) return res.status(400).send("Otp provided is expired.")
     if (otp.revoked) return res.status(400).send("Otp has already been used.")
@@ -79,7 +79,7 @@ const changePassword: RequestHandler = async (req, res, next) => {
     const password = await bcrypt.hash(data.password, 10)
     const [count] = await User.update({ password }, { where: { email: data.email } })
     await otp.update({ revoked: true })
-    
+
     if (count <= 0) return res.status(404).send("User not found.")
     res.status(204).send("Password changed successfully.")
 }

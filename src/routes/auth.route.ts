@@ -1,6 +1,6 @@
 import express from "express"
 import authController from "../controllers/auth.controller.js"
-import jwtMiddleware from "src/middlewares/jwt.middleware.js"
+import jwtMiddleware from "../middlewares/jwt.middleware.js"
 
 //
 

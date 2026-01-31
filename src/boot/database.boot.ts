@@ -5,7 +5,7 @@ import { Detection, detectionAttributes, detectionOptions } from "../models/dete
 import { Mortality, mortalityAttributes, mortalityOptions } from "../models/mortality.model.js"
 import { Reading, readingAttributes, readingOptions } from "../models/reading.model.js"
 import { User, userAttributes, userOptions } from "../models/user.model.js"
-import { Otp, otpAttributes, otpOptions } from "src/models/otp.model.js"
+import { Otp, otpAttributes, otpOptions } from "../models/otp.model.js"
 
 //
 

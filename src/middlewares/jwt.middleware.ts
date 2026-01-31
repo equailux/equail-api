@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken"
 import env from "../config/env.config.js";
 import { type RequestHandler } from "express";
-import { type UserSafeSchema } from "src/schemas/user.schema.js";
+import { type UserSafeSchema } from "../schemas/user.schema.js";
 
 //
 

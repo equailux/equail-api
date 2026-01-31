@@ -1,6 +1,7 @@
 import jwt from "jsonwebtoken"
-import { type RequestHandler } from "express";
 import env from "../config/env.config.js";
+import { type RequestHandler } from "express";
+import { type UserSafeSchema } from "src/schemas/user.schema.js";
 
 //
 
@@ -11,7 +12,7 @@ const requireAuthToken: RequestHandler = async (req, res, next) => {
     await Promise
         .resolve()
         .then(() => jwt.verify(token, env.jwt.signInSecret))
-        .then((res) => (req as any).payload = res)
+        .then((res) => req.user = res as UserSafeSchema)
         .then(() => next())
         .catch(() => res.status(401).send("Invalid authorization provided."))
 }

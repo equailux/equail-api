@@ -13,6 +13,10 @@ const env = {
         email: process.env.ADMIN_EMAIL || "",
         password: process.env.ADMIN_PASSWORD || "",
     },
+    gmail: {
+        address: process.env.GMAIL_ADDRESS || "",
+        password: process.env.GMAIL_PASSWORD || "",
+    },
     database: {
         user: process.env.DATABASE_USER || "",
         pass: process.env.DATABASE_PASS || "",

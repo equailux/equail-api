@@ -16,7 +16,7 @@ const UserQuerySchema = UserSchema.partial()
 const UserSignInSchema = UserSchema.pick({ email: true, password: true })
 const UserChangeNameSchema = UserSchema.pick({ name: true })
 const UserResetPasswordSchema = UserSchema.pick({ email: true })
-const UserChangePasswordSchema = UserSchema.pick({ password: true }).and(z.object({ token: z.jwt() }))
+const UserChangePasswordSchema = UserSchema.pick({ password: true })
 
 //
 

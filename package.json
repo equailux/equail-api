@@ -15,6 +15,7 @@
 	"license": "ISC",
 	"dependencies": {
 		"bcrypt": "^6.0.0",
+		"cloudflared": "^0.7.1",
 		"express": "^5.2.1",
 		"jsonwebtoken": "^9.0.3",
 		"mysql2": "^3.16.2",

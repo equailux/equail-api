@@ -4,6 +4,7 @@
 const env = {
     port: Number(process.env.PORT),
     host: process.env.HOST || "",
+    dev: { email: process.env.DEV_EMAIL || "" },
     jwt: { signInSecret: process.env.JWT_SIGN_IN_SECRET || "" },
     admin: {
         name: process.env.ADMIN_NAME || "",

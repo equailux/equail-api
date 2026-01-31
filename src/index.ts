@@ -5,6 +5,7 @@ import database from "./boot/database.boot.js"
 import apiRoute from "./routes/api.route.js"
 import authRoute from "./routes/auth.route.js"
 import mail from "./boot/mail.boot.js"
+import cloudflared from "./boot/cloudflared.boot.js"
 
 //
 
@@ -13,6 +14,7 @@ const app = express()
 await database.boot()
 await admin.boot()
 await mail.boot()
+await cloudflared.boot()
 
 //
 

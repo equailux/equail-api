@@ -11,17 +11,31 @@ const UserSchema = z.object({
     updatedAt: z.coerce.date(),
 })
 
+const UserSafeSchema = UserSchema.omit({ password: true })
 const UserQuerySchema = UserSchema.partial()
-const UserCreateSchema = UserSchema.pick({ name: true, email: true, password: true })
-const UserUpdateSchema = UserSchema.pick({ name: true, email: true, password: true }).partial()
+const UserSignInSchema = UserSchema.pick({ email: true, password: true })
+const UserChangeNameSchema = UserSchema.pick({ name: true })
+const UserResetPasswordSchema = UserSchema.pick({ email: true })
+const UserChangePasswordSchema = UserSchema.pick({ password: true }).and(z.object({ token: z.jwt() }))
 
 //
 
 type UserSchema = z.infer<typeof UserSchema>
+type UserSafeSchema = z.infer<typeof UserSafeSchema>
 type UserQuerySchema = z.infer<typeof UserQuerySchema>
-type UserCreateSchema = z.infer<typeof UserCreateSchema>
-type UserUpdateSchema = z.infer<typeof UserUpdateSchema>
+type UserSignInSchema = z.infer<typeof UserSignInSchema>
+type UserChangeNameSchema = z.infer<typeof UserChangeNameSchema>
+type UserResetPasswordSchema = z.infer<typeof UserResetPasswordSchema>
+type UserChangePasswordSchema = z.infer<typeof UserChangePasswordSchema>
 
 //
 
-export { UserSchema, UserQuerySchema, UserCreateSchema, UserUpdateSchema }
+export {
+    UserSchema, 
+    UserSafeSchema, 
+    UserQuerySchema, 
+    UserSignInSchema, 
+    UserChangeNameSchema, 
+    UserResetPasswordSchema,
+    UserChangePasswordSchema,
+}

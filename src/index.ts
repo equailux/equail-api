@@ -21,4 +21,4 @@ await cloudflared.boot()
 app.use("/api", apiRoute.router)
 app.use("/auth", authRoute.router)
 
-app.listen(env.port, env.host, () => console.log(`Api active on http://${env.host}:${env.port}.`))
+app.listen(env.port, env.host, () => console.log(`Api active on ${env.protocol}://${env.host}:${env.port}.`))

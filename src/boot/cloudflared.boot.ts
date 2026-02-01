@@ -6,7 +6,8 @@ import mailService from "../services/mail.service.js"
 //
 
 const boot = async () => {
-    await cloudflaredService.connect()
+    const { protocol, host, port } = env
+    await cloudflaredService.connect(`${protocol}://${host}:${port}`)
     const url = cloudflaredService.getUrl()
 
     const user = await User.findOne({ where: {} }) as User

@@ -1,34 +1,40 @@
 import { RawData, WebSocket, WebSocketServer } from "ws";
 import { type IncomingMessage } from "http"
 import { type Duplex } from "stream";
-
-//
-
-type Cmd = `c:${string}` | `r:${string}` | `u:${string}` | `d:${string}`
-type Handler<T = any> = (data: T) => any
+import { WsEvent, WsEventHandler, WsEventOptions, WsEventQuery, WsEventSchema } from "../schemas/ws.event.schema.js";
 
 //
 
 const wss = new WebSocketServer({ noServer: true })
 const sockets: WebSocket[] = []
-const handlers = new Map<Cmd, Handler[]>()
+const handlers: WsEventOptions<any>[] = []
 
 //
 
-const upgrade = async (req: IncomingMessage, socket: Duplex, head: NonSharedBuffer) => {
+const upgrade = async (
+    req: IncomingMessage,
+    socket: Duplex,
+    head: NonSharedBuffer
+) => {
     wss.on("connection", onConnect)
     wss.handleUpgrade(req, socket, head, (ws) => wss.emit("connection", ws))
 }
 
-const respond = async <T = any>(cmd: Cmd, handler: Handler<T>) => {
-    if (!handlers.has(cmd)) handlers.set(cmd, [handler])
-    handlers.get(cmd)?.push(handler)
+const subscribe = async <T extends object = any>(
+    name: string,
+    query: WsEventQuery,
+    handler: WsEventHandler<T>
+) => {
+    handlers.push({ name, query, handler })
 }
 
-const broadcast = async (msg: string) => {
-    sockets
-        .filter((s) => s.OPEN)
-        .forEach((s) => s.send(msg, (e) => console.error(`App websocket error: ${e?.message}.`)))
+const broadcast = async <T extends object = any>(msg: string | WsEvent<T>) => {
+    const data = typeof msg == "string" ? msg : JSON.stringify(msg)
+    const onError = (e: any) => console.error(`App websocket error: ${e?.message}.`)
+    const promises = sockets
+        .filter((s) => s.readyState == s.OPEN)
+        .map((s) => Promise.resolve().then(() => s.send(data, onError)).catch(onError))
+    await Promise.all(promises)
 }
 
 //
@@ -40,40 +46,32 @@ const onConnect = async (ws: WebSocket) => {
     console.info(`App websocket device connected.`)
 }
 
-const onMessage = async <T = any>(ws: WebSocket, data: RawData, isBinary: boolean) => {
+const onMessage = async (ws: WebSocket, data: RawData, isBinary: boolean) => {
     if (isBinary) return console.info(`App websocket received binary.`)
-    
+
     const dstr = data.toString()
-    const parsed = await Promise
+    const json = await Promise
         .resolve()
         .then(() => JSON.parse(dstr))
         .catch(() => undefined)
-    
-    if (!parsed) return console.info(`App websocket received invalid message.`)
-    if (!("cmd" in parsed)) return console.info(`App websocket received cmdless message.`)
-    
-    const msg = parsed as T & { cmd: Cmd }
-    const cbs = handlers.get(msg.cmd)
-    if (!cbs || cbs.length <= 0) return console.info(`App websocket doesn't have handler for ${msg.cmd}.`)
-    
-    const promises = []
-    for (const cb of cbs) {
-        const prms = Promise
-            .resolve()
-            .then(() => cb(msg))
-            .catch((e) => console.error(`App websocket handler error: ${e?.message}.`))
-        promises.push(prms)
-    }
-    
+    if (!json) return console.info(`App websocket received non-json message.`)
+
+    const { data: parsed, success } = WsEventSchema.safeParse(json)
+    if (!success) return console.info(`App websocket received invalid event.`)
+
+    const onError = (e: any) => console.error(`App websocket error: ${e?.message}.`)
+    const promises = handlers
+        .filter((h) => h.name == parsed.name && h.query == parsed.query)
+        .map((h) => Promise.resolve().then(() => h.handler(parsed.data)).catch(onError))
     await Promise.all(promises)
 }
 
 const onDisconnect = async (ws: WebSocket, code: number, reason: Buffer) => {
     const index = sockets.indexOf(ws)
     if (index !== -1) sockets.splice(index, 1)
-    console.info(`App websocket device disconnected.`)
+    console.info(`App websocket device disconnected - ${code} - ${reason.toString()}.`)
 }
 
 //
 
-export default { upgrade, respond, broadcast }
+export default { upgrade, subscribe, broadcast }

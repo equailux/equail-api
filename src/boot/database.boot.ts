@@ -15,6 +15,7 @@ const boot = async () => {
 
     const rawsqlize = new Sequelize(url, { logging: false })
     await rawsqlize.query(`CREATE DATABASE IF NOT EXISTS \`${name}\`;`)
+    console.info("Database connected and checked.")
     const sequelize = new Sequelize(`${url}/${name}`, { logging: false })
 
     Capture.init(captureAttributes, captureOptions(sequelize))
@@ -30,6 +31,7 @@ const boot = async () => {
     await sequelize.authenticate()
     const { sync, alter, force } = env.database
     if (sync) await sequelize.sync({ alter, force })
+    if (sync) console.info("Database synced successfully.")
 }
 
 //

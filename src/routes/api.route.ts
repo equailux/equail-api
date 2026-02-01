@@ -3,7 +3,7 @@ import captureRoute from "./capture.route.js"
 import mortalityRoute from "./mortality.route.js"
 import readingRoute from "./reading.route.js"
 import jwtMiddleware from "../middlewares/jwt.middleware.js"
-import logMiddleware from "src/middlewares/log.middleware.js"
+import logMiddleware from "../middlewares/log.middleware.js"
 
 //
 

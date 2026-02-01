@@ -1,6 +1,6 @@
-import { onCreateReading } from "src/handlers/esp.handler.js"
-import { ReadingCreateSchema } from "src/schemas/reading.schema.js"
-import espWebsocket from "src/websockets/esp.websocket.js"
+import { onCreateReading } from "../handlers/esp.handler.js"
+import { ReadingCreateSchema } from "../schemas/reading.schema.js"
+import espWebsocket from "../websockets/esp.websocket.js"
 
 //
 

@@ -1,6 +1,6 @@
 import { type IncomingMessage } from "http"
 import { type Duplex } from "stream";
-import espWebsocket from "src/websockets/esp.websocket.js";
+import espWebsocket from "../websockets/esp.websocket.js";
 
 //
 

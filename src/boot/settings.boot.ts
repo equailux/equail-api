@@ -1,5 +1,5 @@
-import { Settings } from "src/models/settings.model.js"
-import { SettingsCreateSchema } from "src/schemas/settings.model.js"
+import { Settings } from "../models/settings.model.js"
+import { SettingsCreateSchema } from "../schemas/settings.model.js"
 
 //
 

@@ -1,6 +1,6 @@
-import { Reading } from "src/models/reading.model.js";
-import { ReadingCreateSchema } from "src/schemas/reading.schema.js";
-import appWebsocket from "src/websockets/app.websocket.js";
+import { Reading } from "../models/reading.model.js";
+import { ReadingCreateSchema } from "../schemas/reading.schema.js";
+import appWebsocket from "../websockets/app.websocket.js";
 
 //
 

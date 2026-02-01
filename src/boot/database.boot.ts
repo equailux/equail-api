@@ -6,7 +6,7 @@ import { Mortality, mortalityAttributes, mortalityOptions } from "../models/mort
 import { Reading, readingAttributes, readingOptions } from "../models/reading.model.js"
 import { User, userAttributes, userOptions } from "../models/user.model.js"
 import { Otp, otpAttributes, otpOptions } from "../models/otp.model.js"
-import { Settings, settingsAttributes, settingsOptions } from "src/models/settings.model.js"
+import { Settings, settingsAttributes, settingsOptions } from "../models/settings.model.js"
 
 //
 

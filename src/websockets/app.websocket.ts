@@ -42,11 +42,11 @@ const broadcast = async <T extends object = any>(msg: string | WsEvent<T>) => {
 const onConnect = async (ws: WebSocket) => {
     sockets.push(ws)
     ws.on("message", onMessage)
-    ws.on("close", onDisconnect)
+    ws.on("close", onDisconnect(ws))
     console.info(`App websocket device connected.`)
 }
 
-const onMessage = async (ws: WebSocket, data: RawData, isBinary: boolean) => {
+const onMessage = async (data: RawData, isBinary: boolean) => {
     if (isBinary) return console.info(`App websocket received binary.`)
 
     const dstr = data.toString()
@@ -54,7 +54,7 @@ const onMessage = async (ws: WebSocket, data: RawData, isBinary: boolean) => {
         .resolve()
         .then(() => JSON.parse(dstr))
         .catch(() => undefined)
-    if (!json) return console.info(`App websocket received non-json message.`)
+    if (!json) return console.info(`App websocket received non-json message: ${dstr}.`)
 
     const { data: parsed, success } = WsEventSchema.safeParse(json)
     if (!success) return console.info(`App websocket received invalid event.`)
@@ -66,7 +66,7 @@ const onMessage = async (ws: WebSocket, data: RawData, isBinary: boolean) => {
     await Promise.all(promises)
 }
 
-const onDisconnect = async (ws: WebSocket, code: number, reason: Buffer) => {
+const onDisconnect = (ws: WebSocket) => async (code: number, reason: Buffer) => {
     const index = sockets.indexOf(ws)
     if (index !== -1) sockets.splice(index, 1)
     console.info(`App websocket device disconnected - ${code} - ${reason.toString()}.`)

@@ -28,7 +28,7 @@ const respond = async <T = any>(cmd: Cmd, handler: Handler<T>) => {
 const broadcast = async (msg: string) => {
     sockets
         .filter((s) => s.OPEN)
-        .forEach((s) => s.send(msg, (e) => console.error(`Esp service error: ${e?.message}.`)))
+        .forEach((s) => s.send(msg, (e) => console.error(`Esp websocket error: ${e?.message}.`)))
 }
 
 //
@@ -37,11 +37,11 @@ const onConnect = async (ws: WebSocket) => {
     sockets.push(ws)
     ws.on("message", onMessage)
     ws.on("close", onDisconnect)
-    console.info(`Esp service device connected.`)
+    console.info(`Esp websocket device connected.`)
 }
 
 const onMessage = async <T = any>(ws: WebSocket, data: RawData, isBinary: boolean) => {
-    if (isBinary) return console.info(`Esp service received binary.`)
+    if (isBinary) return console.info(`Esp websocket received binary.`)
     
     const dstr = data.toString()
     const parsed = await Promise
@@ -49,19 +49,19 @@ const onMessage = async <T = any>(ws: WebSocket, data: RawData, isBinary: boolea
         .then(() => JSON.parse(dstr))
         .catch(() => undefined)
     
-    if (!parsed) return console.info(`Esp service received invalid message.`)
-    if (!("cmd" in parsed)) return console.info(`Esp service received cmdless message.`)
+    if (!parsed) return console.info(`Esp websocket received invalid message.`)
+    if (!("cmd" in parsed)) return console.info(`Esp websocket received cmdless message.`)
     
     const msg = parsed as T & { cmd: Cmd }
     const cbs = handlers.get(msg.cmd)
-    if (!cbs || cbs.length <= 0) return console.info(`Esp service doesn't have handler for ${msg.cmd}.`)
+    if (!cbs || cbs.length <= 0) return console.info(`Esp websocket doesn't have handler for ${msg.cmd}.`)
     
     const promises = []
     for (const cb of cbs) {
         const prms = Promise
             .resolve()
             .then(() => cb(msg))
-            .catch((e) => console.error(`Esp service handler error: ${e?.message}.`))
+            .catch((e) => console.error(`Esp websocket handler error: ${e?.message}.`))
         promises.push(prms)
     }
     
@@ -71,7 +71,7 @@ const onMessage = async <T = any>(ws: WebSocket, data: RawData, isBinary: boolea
 const onDisconnect = async (ws: WebSocket, code: number, reason: Buffer) => {
     const index = sockets.indexOf(ws)
     if (index !== -1) sockets.splice(index, 1)
-    console.info(`Esp service device disconnected.`)
+    console.info(`Esp websocket device disconnected.`)
 }
 
 //

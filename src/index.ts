@@ -26,6 +26,7 @@ await app.boot()
 
 //
 
+api.get("/", (_, res) => res.send("I am api only."))
 api.use("/api", apiRoute.router)
 api.use("/auth", authRoute.router)
 

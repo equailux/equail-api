@@ -6,6 +6,7 @@ import { Mortality, mortalityAttributes, mortalityOptions } from "../models/mort
 import { Reading, readingAttributes, readingOptions } from "../models/reading.model.js"
 import { User, userAttributes, userOptions } from "../models/user.model.js"
 import { Otp, otpAttributes, otpOptions } from "../models/otp.model.js"
+import { Settings, settingsAttributes, settingsOptions } from "src/models/settings.model.js"
 
 //
 
@@ -24,6 +25,7 @@ const boot = async () => {
     Otp.init(otpAttributes, otpOptions(sequelize))
     Reading.init(readingAttributes, readingOptions(sequelize))
     User.init(userAttributes, userOptions(sequelize))
+    Settings.init(settingsAttributes, settingsOptions(sequelize))
 
     Capture.hasMany(Detection, { foreignKey: "captureId", onDelete: "CASCADE" })
     Detection.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })

@@ -8,12 +8,14 @@ import authRoute from "./routes/auth.route.js"
 import mail from "./boot/mail.boot.js"
 import cloudflared from "./boot/cloudflared.boot.js"
 import websocketService from "./services/websocket.service.js"
+import settings from "./boot/settings.boot.js"
 
 //
 
 const app = express()
 
 await database.boot()
+await settings.boot()
 await admin.boot()
 await mail.boot()
 await cloudflared.boot()

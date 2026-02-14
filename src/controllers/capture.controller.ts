@@ -22,14 +22,13 @@ const get: RequestHandler = async (req, res, next) => {
 }
 
 const post: RequestHandler = async (req, res, next) => {
+    if (!req.file) return res.status(400).send("Image file not found.")
+    
     const { data, error, success } = CaptureCreateSchema.safeParse(req.body)
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
-
-    // --- Save Image
-    // --- Send Image to AI API for Detections
-
-    // const capture = await Capture.create(data)
-    // res.send(capture.dataValues)
+    
+    const capture = await Capture.create({ ...data, image: req.file.fieldname })
+    res.send(capture.dataValues)
 }
 
 const patch: RequestHandler = async (req, res, next) => {

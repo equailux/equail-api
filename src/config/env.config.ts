@@ -9,10 +9,6 @@ const env = {
     jwt: { signInSecret: process.env.JWT_SIGN_IN_SECRET || "" },
     multer: { path: process.env.MULTER_PATH || "" },
     proxy: { url: process.env.PROXY_URL || "" },
-    ai: {
-        url: process.env.AI_API_URL,
-        apikey: process.env.AI_API_KEY,
-    },
     admin: {
         name: process.env.ADMIN_NAME || "",
         email: process.env.ADMIN_EMAIL || "",

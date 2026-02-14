@@ -15,7 +15,7 @@ class Detection extends Model<InferAttributes<Detection>, InferCreationAttribute
     declare y: number
     declare w: number
     declare h: number
-    declare label: string
+    declare class: string
     declare confidence: number
     declare captureId: ForeignKey<number>
     declare createdAt: CreationOptional<Date>
@@ -46,7 +46,7 @@ const detectionAttributes: ModelAttributes<Detection, InferAttributes<Detection>
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
-    label: {
+    class: {
         type: DataTypes.STRING,
         allowNull: false,
     },

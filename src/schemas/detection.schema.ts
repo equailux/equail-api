@@ -8,7 +8,7 @@ const DetectionSchema = z.object({
     y: z.coerce.number(),
     w: z.coerce.number(),
     h: z.coerce.number(),
-    label: z.string().min(1),
+    class: z.string().min(1),
     confidence: z.coerce.number(),
     captureId: z.coerce.number().int(),
     createdAt: z.coerce.date(),
@@ -22,7 +22,7 @@ const DetectionCreateSchema = DetectionSchema.pick({
     y: true, 
     w: true, 
     h: true, 
-    label: true, 
+    class: true, 
     confidence: true,
 })
 
@@ -31,7 +31,7 @@ const DetectionUpdateSchema = DetectionSchema.pick({
     y: true,
     w: true,
     h: true,
-    label: true,
+    class: true,
     confidence: true,
 }).partial()
 

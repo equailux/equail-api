@@ -4,10 +4,10 @@ import z from "zod";
 
 const DetectionSchema = z.object({
     id: z.coerce.number().int(),
-    x1: z.coerce.number(),
-    y1: z.coerce.number(),
-    x2: z.coerce.number(),
-    y2: z.coerce.number(),
+    x: z.coerce.number(),
+    y: z.coerce.number(),
+    w: z.coerce.number(),
+    h: z.coerce.number(),
     label: z.string().min(1),
     confidence: z.coerce.number(),
     captureId: z.coerce.number().int(),
@@ -18,19 +18,19 @@ const DetectionSchema = z.object({
 const DetectionQuerySchema = DetectionSchema.partial()
 
 const DetectionCreateSchema = DetectionSchema.pick({
-    x1: true, 
-    y1: true, 
-    x2: true, 
-    y2: true, 
+    x: true, 
+    y: true, 
+    w: true, 
+    h: true, 
     label: true, 
     confidence: true,
 })
 
 const DetectionUpdateSchema = DetectionSchema.pick({
-    x1: true,
-    y1: true,
-    x2: true,
-    y2: true,
+    x: true,
+    y: true,
+    w: true,
+    h: true,
     label: true,
     confidence: true,
 }).partial()

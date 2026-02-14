@@ -11,10 +11,10 @@ import type {
 
 class Detection extends Model<InferAttributes<Detection>, InferCreationAttributes<Detection>> {
     declare id: CreationOptional<number>
-    declare x1: number
-    declare y1: number
-    declare x2: number
-    declare y2: number
+    declare x: number
+    declare y: number
+    declare w: number
+    declare h: number
     declare label: string
     declare confidence: number
     declare captureId: ForeignKey<number>
@@ -30,19 +30,19 @@ const detectionAttributes: ModelAttributes<Detection, InferAttributes<Detection>
         primaryKey: true,
         autoIncrement: true,
     },
-    x1: {
+    x: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
-    y1: {
+    y: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
-    x2: {
+    w: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
-    y2: {
+    h: {
         type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },

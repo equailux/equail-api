@@ -3,15 +3,19 @@ import multer from "multer";
 
 //
 
-const storage = multer.diskStorage({
-    destination: `${process.cwd()}/${env.multer.path}`,
-    filename: (_, file, cb) => cb(null, `${10000000000000 - Date.now()}-${Math.random().toFixed(4)}-${file.filename}`),
-})
-
-const filter: multer.Options["fileFilter"] = (req, file, cb) => {
+const filter: multer.Options["fileFilter"] = (_, file, cb) => {
     if (file.mimetype.startsWith("image/")) cb(null, true)
     else cb(new Error("Only images are allowed."))
 }
+
+const filename: multer.DiskStorageOptions["filename"] = (_, file, cb) => {
+    cb(null, `${10000000000000 - Date.now()}-${Math.random().toFixed(4)}-${file.originalname}`)
+}
+
+const storage = multer.diskStorage({
+    filename,
+    destination: `${process.cwd()}/${env.multer.path}`,
+})
 
 const upload = multer({
     storage,

@@ -1,12 +1,12 @@
-import env from "../config/env.config.js"
+import env from "@/config/env.config.js"
 import { Sequelize } from "sequelize"
-import { Capture, captureAttributes, captureOptions, } from "../models/capture.model.js"
-import { Detection, detectionAttributes, detectionOptions } from "../models/detection.model.js"
-import { Mortality, mortalityAttributes, mortalityOptions } from "../models/mortality.model.js"
-import { Reading, readingAttributes, readingOptions } from "../models/reading.model.js"
-import { User, userAttributes, userOptions } from "../models/user.model.js"
-import { Otp, otpAttributes, otpOptions } from "../models/otp.model.js"
-import { Settings, settingsAttributes, settingsOptions } from "../models/settings.model.js"
+import { Capture, captureAttributes, captureOptions, } from "@/models/capture.model.js"
+import { Detection, detectionAttributes, detectionOptions } from "@/models/detection.model.js"
+import { Mortality, mortalityAttributes, mortalityOptions } from "@/models/mortality.model.js"
+import { Reading, readingAttributes, readingOptions } from "@/models/reading.model.js"
+import { User, userAttributes, userOptions } from "@/models/user.model.js"
+import { Otp, otpAttributes, otpOptions } from "@/models/otp.model.js"
+import { Settings, settingsAttributes, settingsOptions } from "@/models/settings.model.js"
 
 //
 

@@ -1,6 +1,6 @@
-import { WsEventHandler } from "../schemas/ws.event.schema.js";
-import { Settings } from "../models/settings.model.js";
-import { SettingsUpdateSchema } from "../schemas/settings.model.js";
+import { WsEventHandler } from "@/schemas/ws.event.schema.js";
+import { Settings } from "@/models/settings.model.js";
+import { SettingsUpdateSchema } from "@/schemas/settings.model.js";
 
 //
 

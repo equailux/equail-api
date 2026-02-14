@@ -1,18 +1,18 @@
-import env from "../config/env.config.js";
+import env from "@/config/env.config.js";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
-import mailService from "../services/mail.service.js";
-import { Otp } from "../models/otp.model.js";
-import { User } from "../models/user.model.js";
+import mailService from "@/services/mail.service.js";
+import { Otp } from "@/models/otp.model.js";
+import { User } from "@/models/user.model.js";
 import { RequestHandler } from "express";
-import { OtpDigitsSchema } from "../schemas/otp.schema.js";
+import { OtpDigitsSchema } from "@/schemas/otp.schema.js";
 import {
     UserChangeNameSchema,
     UserChangePasswordSchema,
     UserResetPasswordSchema,
     UserSafeSchema,
     UserSignInSchema
-} from "../schemas/user.schema.js";
+} from "@/schemas/user.schema.js";
 
 //
 

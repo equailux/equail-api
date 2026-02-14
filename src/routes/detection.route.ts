@@ -1,5 +1,5 @@
 import express from "express"
-import detectionController from "../controllers/detection.controller.js"
+import detectionController from "@/controllers/detection.controller.js"
 
 //
 

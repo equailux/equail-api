@@ -1,9 +1,9 @@
-import { User } from "../models/user.model.js"
-import env from "../config/env.config.js"
-import cloudflaredService from "../services/cloudflared.service.js"
-import mailService from "../services/mail.service.js"
+import { User } from "@/models/user.model.js"
+import env from "@/config/env.config.js"
+import cloudflaredService from "@/services/cloudflared.service.js"
+import mailService from "@/services/mail.service.js"
 
-//
+
 
 const boot = async () => {
     const { protocol, host, port } = env
@@ -25,6 +25,6 @@ const boot = async () => {
     console.info(`Cloudflared url mailed to admin.`)
 }
 
-//
+
 
 export default { boot }

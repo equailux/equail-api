@@ -1,5 +1,5 @@
-import espHandler from "../handlers/esp.handler.js"
-import espWebsocket from "../websockets/esp.websocket.js"
+import espHandler from "@/handlers/esp.handler.js"
+import espWebsocket from "@/websockets/esp.websocket.js"
 
 //
 

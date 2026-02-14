@@ -1,4 +1,4 @@
-import { UserSafeSchema } from "../schemas/user.schema.ts";
+import { UserSafeSchema } from "@/schemas/user.schema.ts";
 
 //
 

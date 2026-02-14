@@ -1,7 +1,7 @@
 import express from "express"
-import authController from "../controllers/auth.controller.js"
-import jwtMiddleware from "../middlewares/jwt.middleware.js"
-import logMiddleware from "../middlewares/log.middleware.js"
+import authController from "@/controllers/auth.controller.js"
+import jwtMiddleware from "@/middlewares/jwt.middleware.js"
+import logMiddleware from "@/middlewares/log.middleware.js"
 
 //
 

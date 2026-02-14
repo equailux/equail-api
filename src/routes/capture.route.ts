@@ -1,6 +1,6 @@
 import express from "express"
-import captureController from "../controllers/capture.controller.js"
-import detectionRoute from "./detection.route.js"
+import captureController from "@/controllers/capture.controller.js"
+import detectionRoute from "@/routes/detection.route.js"
 
 //
 

@@ -1,6 +1,6 @@
-import { Detection } from "../models/detection.model.js"
-import { DetectionCreateSchema, DetectionQuerySchema, DetectionUpdateSchema } from "../schemas/detection.schema.js"
-import { PaginationSchema } from "../schemas/pagination.schema.js"
+import { Detection } from "@/models/detection.model.js"
+import { DetectionCreateSchema, DetectionQuerySchema, DetectionUpdateSchema } from "@/schemas/detection.schema.js"
+import { PaginationSchema } from "@/schemas/pagination.schema.js"
 import { type RequestHandler } from "express"
 import { Op } from "sequelize"
 

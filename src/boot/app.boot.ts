@@ -1,5 +1,5 @@
-import appHandler from "../handlers/app.handler.js"
-import appWebsocket from "../websockets/app.websocket.js"
+import appHandler from "@/handlers/app.handler.js"
+import appWebsocket from "@/websockets/app.websocket.js"
 
 //
 

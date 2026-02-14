@@ -1,5 +1,5 @@
 import express from "express"
-import mortalityController from "../controllers/mortality.controller.js"
+import mortalityController from "@/controllers/mortality.controller.js"
 
 //
 

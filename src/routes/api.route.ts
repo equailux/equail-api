@@ -1,9 +1,9 @@
 import express from "express"
-import captureRoute from "./capture.route.js"
-import mortalityRoute from "./mortality.route.js"
-import readingRoute from "./reading.route.js"
-import jwtMiddleware from "../middlewares/jwt.middleware.js"
-import logMiddleware from "../middlewares/log.middleware.js"
+import captureRoute from "@/routes/capture.route.js"
+import mortalityRoute from "@/routes/mortality.route.js"
+import readingRoute from "@/routes/reading.route.js"
+import jwtMiddleware from "@/middlewares/jwt.middleware.js"
+import logMiddleware from "@/middlewares/log.middleware.js"
 
 //
 

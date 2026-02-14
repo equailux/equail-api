@@ -1,7 +1,7 @@
-import { WsEvent, WsEventHandler } from "../schemas/ws.event.schema.js";
-import { Reading } from "../models/reading.model.js";
-import { ReadingCreateSchema } from "../schemas/reading.schema.js";
-import appWebsocket from "../websockets/app.websocket.js";
+import { WsEvent, WsEventHandler } from "@/schemas/ws.event.schema.js";
+import { Reading } from "@/models/reading.model.js";
+import { ReadingCreateSchema } from "@/schemas/reading.schema.js";
+import appWebsocket from "@/websockets/app.websocket.js";
 
 //
 

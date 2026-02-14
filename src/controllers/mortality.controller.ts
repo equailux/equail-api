@@ -1,6 +1,6 @@
-import { Mortality } from "../models/mortality.model.js"
-import { MortalityCreateSchema, MortalityQuerySchema, MortalityUpdateSchema } from "../schemas/mortality.schema.js"
-import { PaginationSchema } from "../schemas/pagination.schema.js"
+import { Mortality } from "@/models/mortality.model.js"
+import { MortalityCreateSchema, MortalityQuerySchema, MortalityUpdateSchema } from "@/schemas/mortality.schema.js"
+import { PaginationSchema } from "@/schemas/pagination.schema.js"
 import { type RequestHandler } from "express"
 import { Op } from "sequelize"
 

@@ -1,7 +1,7 @@
 import { RawData, WebSocket, WebSocketServer } from "ws";
 import { type IncomingMessage } from "http"
 import { type Duplex } from "stream";
-import { WsEvent, WsEventHandler, WsEventOptions, WsEventQuery, WsEventSchema } from "../schemas/ws.event.schema.js";
+import { WsEvent, WsEventHandler, WsEventOptions, WsEventQuery, WsEventSchema } from "@/schemas/ws.event.schema.js";
 
 //
 

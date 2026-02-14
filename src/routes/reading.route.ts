@@ -1,5 +1,5 @@
 import express from "express"
-import readingController from "../controllers/reading.controller.js"
+import readingController from "@/controllers/reading.controller.js"
 
 //
 

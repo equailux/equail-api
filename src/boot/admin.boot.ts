@@ -1,6 +1,6 @@
-import env from "../config/env.config.js"
+import env from "@/config/env.config.js"
 import bcrypt from "bcrypt"
-import { User } from "../models/user.model.js"
+import { User } from "@/models/user.model.js"
 
 //
 

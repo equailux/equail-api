@@ -1,6 +1,6 @@
-import { Capture } from "../models/capture.model.js"
-import { CaptureCreateSchema, CaptureQuerySchema, CaptureUpdateSchema } from "../schemas/capture.schema.js"
-import { PaginationSchema } from "../schemas/pagination.schema.js"
+import { Capture } from "@/models/capture.model.js"
+import { CaptureCreateSchema, CaptureQuerySchema, CaptureUpdateSchema } from "@/schemas/capture.schema.js"
+import { PaginationSchema } from "@/schemas/pagination.schema.js"
 import { type RequestHandler } from "express"
 import { Op } from "sequelize"
 

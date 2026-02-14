@@ -1,6 +1,6 @@
-import { Reading } from "../models/reading.model.js"
-import { PaginationSchema } from "../schemas/pagination.schema.js"
-import { ReadingCreateSchema, ReadingQuerySchema, ReadingUpdateSchema } from "../schemas/reading.schema.js"
+import { Reading } from "@/models/reading.model.js"
+import { PaginationSchema } from "@/schemas/pagination.schema.js"
+import { ReadingCreateSchema, ReadingQuerySchema, ReadingUpdateSchema } from "@/schemas/reading.schema.js"
 import { type RequestHandler } from "express"
 import { Op } from "sequelize"
 

@@ -1,5 +1,5 @@
-import env from "../config/env.config.js"
-import mailService from "../services/mail.service.js"
+import env from "@/config/env.config.js"
+import mailService from "@/services/mail.service.js"
 
 //
 

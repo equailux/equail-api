@@ -30,13 +30,13 @@ const post: RequestHandler = async (req, res, next) => {
 }
 
 const patch: RequestHandler = async (req, res, next) => {
-    const id = req.params.id as string
-    if (!id) return res.status(400).send("Mortality id required.")
+    const mid = req.params.mid as string
+    if (!mid) return res.status(400).send("Mortality id required.")
 
     const { data, error, success } = MortalityUpdateSchema.safeParse(req.body)
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
 
-    const mortality = await Mortality.findByPk(id)
+    const mortality = await Mortality.findByPk(mid)
     if (!mortality) return res.status(404).send("Mortality not found.")
 
     await mortality.update(data)
@@ -44,10 +44,10 @@ const patch: RequestHandler = async (req, res, next) => {
 }
 
 const destroy: RequestHandler = async (req, res, next) => {
-    const id = req.params.id as string
-    if (!id) return res.status(400).send("Mortality id required.")
+    const mid = req.params.mid as string
+    if (!mid) return res.status(400).send("Mortality id required.")
 
-    const count = await Mortality.destroy({ where: { id } })
+    const count = await Mortality.destroy({ where: { id: mid } })
     if (count <= 0) return res.status(404).send("Mortality not found.")
 
     return res.status(204).send("Mortality deleted successfully.")

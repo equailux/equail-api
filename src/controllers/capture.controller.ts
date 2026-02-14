@@ -33,13 +33,13 @@ const post: RequestHandler = async (req, res, next) => {
 }
 
 const patch: RequestHandler = async (req, res, next) => {
-    const id = req.params.id as string
-    if (!id) return res.status(400).send("Capture id required.")
+    const cid = req.params.cid as string
+    if (!cid) return res.status(400).send("Capture id required.")
 
     const { data, error, success } = CaptureUpdateSchema.safeParse(req.body)
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
 
-    const capture = await Capture.findByPk(id)
+    const capture = await Capture.findByPk(cid)
     if (!capture) return res.status(404).send("Capture not found.")
 
     await capture.update(data)
@@ -47,10 +47,10 @@ const patch: RequestHandler = async (req, res, next) => {
 }
 
 const destroy: RequestHandler = async (req, res, next) => {
-    const id = req.params.id as string
-    if (!id) return res.status(400).send("Capture id required.")
+    const cid = req.params.cid as string
+    if (!cid) return res.status(400).send("Capture id required.")
 
-    const count = await Capture.destroy({ where: { id } })
+    const count = await Capture.destroy({ where: { id: cid } })
     if (count <= 0) return res.status(404).send("Capture not found.")
 
     return res.status(204).send("Capture deleted successfully.")

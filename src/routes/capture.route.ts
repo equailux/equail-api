@@ -7,9 +7,9 @@ import detectionRoute from "@/routes/detection.route.js"
 const router = express.Router()
 router.get("/", captureController.get)
 router.post("/", captureController.post)
-router.patch("/:id", captureController.patch)
-router.delete("/:id", captureController.destroy)
-router.use("/detection", detectionRoute.router)
+router.patch("/:cid", captureController.patch)
+router.delete("/:cid", captureController.destroy)
+router.use("/:cid/detection", detectionRoute.router)
 
 //
 

@@ -3,11 +3,11 @@ import detectionController from "@/controllers/detection.controller.js"
 
 //
 
-const router = express.Router()
+const router = express.Router({ mergeParams: true })
 router.get("/", detectionController.get)
 router.post("/", detectionController.post)
-router.patch("/:id", detectionController.patch)
-router.delete("/:id", detectionController.destroy)
+router.patch("/:did", detectionController.patch)
+router.delete("/:did", detectionController.destroy)
 
 //
 

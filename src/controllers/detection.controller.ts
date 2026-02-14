@@ -30,13 +30,13 @@ const post: RequestHandler = async (req, res, next) => {
 }
 
 const patch: RequestHandler = async (req, res, next) => {
-    const id = req.params.id as string
-    if (!id) return res.status(400).send("Detection id required.")
+    const did = req.params.did as string
+    if (!did) return res.status(400).send("Detection id required.")
 
     const { data, error, success } = DetectionUpdateSchema.safeParse(req.body)
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
 
-    const detection = await Detection.findByPk(id)
+    const detection = await Detection.findByPk(did)
     if (!detection) return res.status(404).send("Detection not found.")
 
     await detection.update(data)
@@ -44,10 +44,10 @@ const patch: RequestHandler = async (req, res, next) => {
 }
 
 const destroy: RequestHandler = async (req, res, next) => {
-    const id = req.params.id as string
-    if (!id) return res.status(400).send("Detection id required.")
+    const did = req.params.did as string
+    if (!did) return res.status(400).send("Detection id required.")
 
-    const count = await Detection.destroy({ where: { id } })
+    const count = await Detection.destroy({ where: { id: did } })
     if (count <= 0) return res.status(404).send("Detection not found.")
 
     return res.status(204).send("Detection deleted successfully.")

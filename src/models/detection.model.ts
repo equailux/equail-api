@@ -11,10 +11,7 @@ import type {
 
 class Detection extends Model<InferAttributes<Detection>, InferCreationAttributes<Detection>> {
     declare id: CreationOptional<number>
-    declare x: number
-    declare y: number
-    declare w: number
-    declare h: number
+    declare box: { x: number, y: number, w: number, h: number }
     declare class: string
     declare confidence: number
     declare captureId: ForeignKey<number>
@@ -30,20 +27,8 @@ const detectionAttributes: ModelAttributes<Detection, InferAttributes<Detection>
         primaryKey: true,
         autoIncrement: true,
     },
-    x: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-    },
-    y: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-    },
-    w: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-    },
-    h: {
-        type: DataTypes.DECIMAL(10, 2),
+    box: {
+        type: DataTypes.JSON,
         allowNull: false,
     },
     class: {

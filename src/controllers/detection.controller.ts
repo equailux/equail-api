@@ -26,6 +26,7 @@ const post: RequestHandler = async (req, res, next) => {
     if (!cid) return res.status(400).send("Capture id required.")
 
     const { data, error, success } = DetectionCreateSchema.safeParse(req.body)
+    if (!success) console.info(error.issues.at(0)?.message)
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
 
     const detection = await Detection.create({ ...data, captureId: Number(cid) })

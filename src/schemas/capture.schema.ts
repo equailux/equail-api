@@ -4,7 +4,6 @@ import z from "zod";
 
 const CaptureSchema = z.object({
     id: z.coerce.number().int(),
-    eggs: z.coerce.number().int(),
     image: z.string().min(1),
     camera: z.string().min(1),
     createdAt: z.coerce.date(),

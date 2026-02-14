@@ -10,7 +10,6 @@ import type {
 
 class Capture extends Model<InferAttributes<Capture>, InferCreationAttributes<Capture>> {
     declare id: CreationOptional<number>
-    declare eggs: number
     declare image: string
     declare camera: string
     declare createdAt: CreationOptional<Date>
@@ -24,10 +23,6 @@ const captureAttributes: ModelAttributes<Capture, InferAttributes<Capture>> = {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-    },
-    eggs: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
     },
     image: {
         type: DataTypes.STRING,

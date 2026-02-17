@@ -10,6 +10,7 @@ import env from "@/config/env.config.js"
 
 const router = express.Router()
 router.use(express.json())
+router.use(express.urlencoded({ extended: true }))
 router.use(logMiddleware.log)
 router.use(jwtMiddleware.requireAuthToken)
 router.use(express.static(`${process.cwd()}/${env.multer.path}`))

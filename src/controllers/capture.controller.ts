@@ -27,7 +27,7 @@ const post: RequestHandler = async (req, res, next) => {
     const { data, error, success } = CaptureCreateSchema.safeParse(req.body)
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
     
-    const capture = await Capture.create({ ...data, image: req.file.fieldname })
+    const capture = await Capture.create({ ...data, image: req.file.filename })
     res.send(capture.dataValues)
 }
 

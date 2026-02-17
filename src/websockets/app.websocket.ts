@@ -5,7 +5,7 @@ import { WsEvent, WsEventHandler, WsEventOptions, WsEventQuery, WsEventSchema } 
 
 //
 
-const wss = new WebSocketServer({ noServer: true })
+const wss = new WebSocketServer({ noServer: true, autoPong: true })
 const sockets: WebSocket[] = []
 const handlers: WsEventOptions<any>[] = []
 

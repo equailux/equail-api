@@ -9,6 +9,8 @@ const wss = new WebSocketServer({ noServer: true, autoPong: true })
 const sockets: WebSocket[] = []
 const handlers: WsEventOptions<any>[] = []
 
+wss.on("connection", (ws: WebSocket) => onConnect(ws))
+
 //
 
 const upgrade = async (
@@ -16,7 +18,6 @@ const upgrade = async (
     socket: Duplex,
     head: NonSharedBuffer
 ) => {
-    wss.on("connection", onConnect)
     wss.handleUpgrade(req, socket, head, (ws) => wss.emit("connection", ws))
 }
 

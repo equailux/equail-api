@@ -4,6 +4,7 @@ import detectionRoute from "@/routes/detection.route.js"
 import uploadMiddleware from "@/middlewares/upload.middleware.js"
 import remarkRoute from "@/routes/remark.route.js"
 import remarkController from "@/controllers/remark.controller.js"
+import detectionController from "@/controllers/detection.controller.js"
 
 //
 
@@ -16,7 +17,8 @@ router.delete("/:cid", captureController.destroy)
 router.use("/remark", remarkRoute.router)
 router.post("/:cid/remark", remarkController.post)
 
-router.use("/:cid/detection", detectionRoute.router)
+router.use("/detection", detectionRoute.router)
+router.post("/:cid/detection", detectionController.post)
 
 //
 

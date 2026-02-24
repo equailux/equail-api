@@ -5,7 +5,6 @@ import detectionController from "@/controllers/detection.controller.js"
 
 const router = express.Router({ mergeParams: true })
 router.get("/", detectionController.get)
-router.post("/", detectionController.post)
 router.patch("/:did", detectionController.patch)
 router.delete("/:did", detectionController.destroy)
 

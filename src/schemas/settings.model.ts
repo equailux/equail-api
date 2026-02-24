@@ -4,9 +4,6 @@ import z from "zod";
 
 const SettingsSchema = z.object({
     id: z.coerce.number().int(),
-    allowPushNotifications: z.boolean().default(true),
-    allowLowFeedAlerts: z.boolean().default(true),
-    allowLowWaterAlerts: z.boolean().default(true),
     allowEnvironmentAlerts: z.boolean().default(true),
     createdAt: z.coerce.date(),
     updatedAt: z.coerce.date(),

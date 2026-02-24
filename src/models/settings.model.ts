@@ -10,9 +10,6 @@ import type {
 
 class Settings extends Model<InferAttributes<Settings>, InferCreationAttributes<Settings>> {
     declare id: CreationOptional<number>
-    declare allowPushNotifications: boolean
-    declare allowLowFeedAlerts: boolean
-    declare allowLowWaterAlerts: boolean
     declare allowEnvironmentAlerts: boolean
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
@@ -25,21 +22,6 @@ const settingsAttributes: ModelAttributes<Settings, InferAttributes<Settings>> =
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
-    },
-    allowPushNotifications: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true,
-    },
-    allowLowFeedAlerts: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true,
-    },
-    allowLowWaterAlerts: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: true,
     },
     allowEnvironmentAlerts: {
         type: DataTypes.BOOLEAN,

@@ -9,9 +9,6 @@ const onUpdateSettings: WsEventHandler<SettingsUpdateSchema> = async (data) => {
 
     const updatable = data.at(0)!
     const defaults = {
-        allowPushNotifications: true,
-        allowLowFeedAlerts: true,
-        allowLowWaterAlerts: true,
         allowEnvironmentAlerts: true,
         ...updatable,
     }

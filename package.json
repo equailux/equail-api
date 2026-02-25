@@ -7,6 +7,8 @@
 	"scripts": {
 		"dev": "tsx --env-file .env src/index.ts",
 		"start": "node --env-file .env dist/index.js",
+		"dev:stage": "tsx --env-file .env.staging src/index.ts",
+		"start:stage": "node --env-file .env.staging dist/index.js",
 		"build": "tsc && tsc-alias",
 		"format": "prettier --write ."
 	},

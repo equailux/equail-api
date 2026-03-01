@@ -1,4 +1,5 @@
 import express from "express"
+import cors from "cors"
 import captureRoute from "@/routes/capture.route.js"
 import mortalityRoute from "@/routes/mortality.route.js"
 import readingRoute from "@/routes/reading.route.js"
@@ -9,6 +10,7 @@ import env from "@/config/env.config.js"
 //
 
 const router = express.Router()
+router.use(cors())
 router.use(express.json())
 router.use(express.urlencoded({ extended: true }))
 router.use(logMiddleware.log)

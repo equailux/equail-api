@@ -1,4 +1,5 @@
 import express from "express"
+import cors from "cors"
 import authController from "@/controllers/auth.controller.js"
 import jwtMiddleware from "@/middlewares/jwt.middleware.js"
 import logMiddleware from "@/middlewares/log.middleware.js"
@@ -6,6 +7,7 @@ import logMiddleware from "@/middlewares/log.middleware.js"
 //
 
 const router = express.Router()
+router.use(cors())
 router.use(express.json())
 router.use(logMiddleware.log)
 router.post("/sign-in", authController.signIn)

@@ -15,7 +15,8 @@ const get: RequestHandler = async (req, res, next) => {
 
     const { alpha, omega, limit, offset } = data
     const where: any = Object.fromEntries(entries)
-    where.createdAt = { ...(alpha && { [Op.gte]: alpha }), ...(omega && { [Op.lte]: omega }) }
+    const createdAt = { ...(alpha && { [Op.gte]: alpha }), ...(omega && { [Op.lte]: omega }) }
+    if (Object.keys(createdAt).length) where.createdAt = createdAt
 
     const captures = await Capture.findAll({ where, raw: true, limit, offset })
     res.send(captures)

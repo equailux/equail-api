@@ -1,5 +1,7 @@
 import express from "express"
 import http from "http"
+import cors from "cors"
+import logMiddleware from "@/middlewares/log.middleware.js"
 import env from "@/config/env.config.js"
 import admin from "@/boot/admin.boot.js"
 import database from "@/boot/database.boot.js"
@@ -26,7 +28,13 @@ await app.boot()
 
 //
 
+api.use(cors())
+api.use(express.json())
+api.use(express.urlencoded({ extended: true }))
+api.use(logMiddleware.log)
+
 api.get("/", (_, res) => res.send("I am api only."))
+api.use("/img", express.static(`${process.cwd()}/${env.multer.path}`))
 api.use("/api", apiRoute.router)
 api.use("/auth", authRoute.router)
 

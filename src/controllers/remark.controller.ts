@@ -29,7 +29,10 @@ const post: RequestHandler = async (req, res, next) => {
     const { data, error, success } = RemarkCreateSchema.safeParse(req.body)
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
 
-    const remark = await Remark.create({ ...data, captureId: Number(cid) })
+    const defaults = { ...data, captureId: Number(cid) }
+    const [remark] = await Remark.findOrCreate({ where: { captureId: cid }, defaults })
+    
+    await remark.update(defaults)
     res.send(remark.dataValues)
 }
 

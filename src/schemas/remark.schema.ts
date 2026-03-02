@@ -4,7 +4,7 @@ import z from "zod";
 
 const RemarkSchema = z.object({
     id: z.coerce.number().int(),
-    comment: z.string().min(1),
+    comment: z.string().default(""),
     approved: z.boolean().optional(),
     captureId: z.coerce.number().int(),
     createdAt: z.coerce.date(),

@@ -11,7 +11,7 @@ const RemarkSchema = z.object({
     updatedAt: z.coerce.date(),
 })
 
-const RemarkQuerySchema = RemarkSchema.partial()
+const RemarkQuerySchema = RemarkSchema.extend({ comment: z.string() }).partial()
 const RemarkCreateSchema = RemarkSchema.pick({ comment: true, approved: true })
 const RemarkUpdateSchema = RemarkSchema.pick({ comment: true, approved: true }).partial()
 

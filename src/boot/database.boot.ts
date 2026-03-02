@@ -7,6 +7,7 @@ import { Reading, readingAttributes, readingOptions } from "@/models/reading.mod
 import { User, userAttributes, userOptions } from "@/models/user.model.js"
 import { Otp, otpAttributes, otpOptions } from "@/models/otp.model.js"
 import { Settings, settingsAttributes, settingsOptions } from "@/models/settings.model.js"
+import { Remark, remarkAttributes, remarkOptions } from "@/models/remark.model.js"
 
 //
 
@@ -29,9 +30,12 @@ const boot = async () => {
     Reading.init(readingAttributes, readingOptions(sequelize))
     User.init(userAttributes, userOptions(sequelize))
     Settings.init(settingsAttributes, settingsOptions(sequelize))
+    Remark.init(remarkAttributes, remarkOptions(sequelize))
 
     Capture.hasMany(Detection, { foreignKey: "captureId", onDelete: "CASCADE" })
+    Capture.hasMany(Remark, { foreignKey: "captureId", onDelete: "CASCADE" })
     Detection.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
+    Remark.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
 
     await sequelize.authenticate()
     const { sync, alter, force } = env.database

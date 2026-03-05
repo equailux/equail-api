@@ -1,8 +1,10 @@
+import fs from "fs/promises"
 import { Capture } from "@/models/capture.model.js"
 import { CaptureCreateSchema, CaptureQuerySchema, CaptureUpdateSchema } from "@/schemas/capture.schema.js"
 import { PaginationSchema } from "@/schemas/pagination.schema.js"
 import { type RequestHandler } from "express"
 import { Op } from "sequelize"
+import env from "@/config/env.config.js"
 
 //
 
@@ -50,8 +52,13 @@ const destroy: RequestHandler = async (req, res, next) => {
     const cid = req.params.cid as string
     if (!cid) return res.status(400).send("Capture id required.")
 
-    const count = await Capture.destroy({ where: { id: cid } })
-    if (count <= 0) return res.status(404).send("Capture not found.")
+    const capture = await Capture.findByPk(cid)
+    if (!capture) return res.status(404).send("Capture not found.")
+
+    await fs
+        .unlink(`${process.cwd()}/${env.multer.path}/${capture.image}`)
+        .catch(() => undefined)
+    await capture.destroy()
 
     return res.status(204).send("Capture deleted successfully.")
 }

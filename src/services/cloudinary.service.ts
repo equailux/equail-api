@@ -13,16 +13,12 @@ const connect = async (name: string, key: string, secret: string) => {
     cloudinary.config({ cloud_name: name, api_key: key, api_secret: secret })
 }
 
-const create = async (
-    path: string,
-    filename: string,
-    folder: string = "equail"
-) => {
-    return await cloudinary.uploader.upload(path, { public_id: filename, folder })
+const create = async (path: string, filename: string) => {
+    return await cloudinary.uploader.upload(path, { public_id: filename })
 }
 
-const retrieve = async (filename: string, folder: string = "equail") => {
-    const url = `https://res.cloudinary.com/${cloudName}/image/upload/${folder}/${filename}`
+const retrieve = async (filename: string) => {
+    const url = cloudinary.url(filename)
     return await fetch(url)
 }
 

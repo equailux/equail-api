@@ -13,6 +13,7 @@ const env = {
         admin: process.env.BOOT_ADMIN === "true",
         app: process.env.BOOT_APP === "true",
         cloudflared: process.env.BOOT_CLOUDFLARED === "true",
+        cloudinary: process.env.BOOT_CLOUDINARY === "true",
         database: process.env.BOOT_DATABASE === "true",
         esp: process.env.BOOT_ESP === "true",
         mail: process.env.BOOT_MAIL === "true",
@@ -38,6 +39,13 @@ const env = {
         force: process.env.DATABASE_FORCE === "true",
         dialect: process.env.DATABASE_DIALECT || "",
         certificate: process.env.DATABASE_CERTIFICATE,
+    },
+    cloudinary: {
+        cloudname: process.env.CLOUDINARY_CLOUDNAME || "",
+        api: {
+            key: process.env.CLOUDINARY_API_KEY || "",
+            secret: process.env.CLOUDINARY_API_SECRET || "",
+        },
     },
 }
 

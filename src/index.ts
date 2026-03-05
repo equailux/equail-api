@@ -13,6 +13,7 @@ import websocketService from "@/services/websocket.service.js"
 import settings from "@/boot/settings.boot.js"
 import esp from "@/boot/esp.boot.js"
 import app from "@/boot/app.boot.js"
+import cloudinary from "@/boot/cloudinary.boot.js"
 
 //
 
@@ -23,6 +24,7 @@ await settings.boot()
 await admin.boot()
 await mail.boot()
 await cloudflared.boot()
+await cloudinary.boot()
 await esp.boot()
 await app.boot()
 

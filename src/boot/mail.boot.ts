@@ -4,6 +4,7 @@ import mailService from "@/services/mail.service.js"
 //
 
 const boot = async () => {
+    if (!env.boot.mail) return console.info(`Mail boot skipped.`)
     const { address, password } = env.gmail
     await mailService.connect(address, password)
     console.info("Mail connected successfully.")

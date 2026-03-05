@@ -9,6 +9,15 @@ const env = {
     jwt: { signInSecret: process.env.JWT_SIGN_IN_SECRET || "" },
     multer: { path: process.env.MULTER_PATH || "" },
     proxy: { url: process.env.PROXY_URL || "" },
+    boot: {
+        admin: process.env.BOOT_ADMIN === "true",
+        app: process.env.BOOT_APP === "true",
+        cloudflared: process.env.BOOT_CLOUDFLARED === "true",
+        database: process.env.BOOT_DATABASE === "true",
+        esp: process.env.BOOT_ESP === "true",
+        mail: process.env.BOOT_MAIL === "true",
+        settings: process.env.BOOT_SETTINGS === "true",
+    },
     admin: {
         name: process.env.ADMIN_NAME || "",
         email: process.env.ADMIN_EMAIL || "",

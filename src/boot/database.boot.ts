@@ -12,6 +12,7 @@ import { Remark, remarkAttributes, remarkOptions } from "@/models/remark.model.j
 //
 
 const boot = async () => {
+    if (!env.boot.database) return console.info(`Database boot skipped.`)
     const { user, pass, host, port, name, dialect, certificate } = env.database
     const url = `${dialect}://${user}:${pass}@${host}:${port}`
 

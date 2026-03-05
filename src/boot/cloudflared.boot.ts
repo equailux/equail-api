@@ -6,6 +6,7 @@ import mailService from "@/services/mail.service.js"
 
 
 const boot = async () => {
+    if (!env.boot.cloudflared) return console.info(`Cloudflared boot skipped.`)
     const { protocol, host, port } = env
     await cloudflaredService.connect(`${protocol}://${host}:${port}`)
     const url = cloudflaredService.getUrl()

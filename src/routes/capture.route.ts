@@ -13,6 +13,7 @@ router.get("/", captureController.get)
 router.post("/", uploadMiddleware.upload.single("image"), captureController.post)
 router.patch("/:cid", captureController.patch)
 router.delete("/:cid", captureController.destroy)
+router.get("/image/:filename", captureController.getImage)
 
 router.use("/remark", remarkRoute.router)
 router.post("/:cid/remark", remarkController.post)

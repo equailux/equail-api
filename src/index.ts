@@ -36,7 +36,6 @@ api.use(express.urlencoded({ extended: true }))
 api.use(logMiddleware.log)
 
 api.get("/", (_, res) => res.send("I am api only."))
-api.use("/img", express.static(`${process.cwd()}/${env.multer.path}`))
 api.use("/api", apiRoute.router)
 api.use("/auth", authRoute.router)
 

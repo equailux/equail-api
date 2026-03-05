@@ -5,6 +5,7 @@ import { PaginationSchema } from "@/schemas/pagination.schema.js"
 import { type RequestHandler } from "express"
 import { Op } from "sequelize"
 import env from "@/config/env.config.js"
+import cloudinaryService from "@/services/cloudinary.service.js"
 
 //
 
@@ -30,6 +31,7 @@ const post: RequestHandler = async (req, res, next) => {
     const { data, error, success } = CaptureCreateSchema.safeParse(req.body)
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
     
+    await cloudinaryService.create(`${env.multer.path}/${req.file.filename}`, req.file.filename)
     const capture = await Capture.create({ ...data, image: req.file.filename })
     res.send(capture.dataValues)
 }
@@ -58,6 +60,7 @@ const destroy: RequestHandler = async (req, res, next) => {
     await fs
         .unlink(`${process.cwd()}/${env.multer.path}/${capture.image}`)
         .catch(() => undefined)
+    await cloudinaryService.destroy(capture.image)
     await capture.destroy()
 
     return res.status(204).send("Capture deleted successfully.")
@@ -65,4 +68,25 @@ const destroy: RequestHandler = async (req, res, next) => {
 
 //
 
-export default { get, post, patch, destroy }
+const getImage: RequestHandler = async (req, res, next) => {
+    const filename = req.params.filename as string
+    if (!filename) return res.status(404).send("Capture image filename expected.")
+    
+    const path = `${process.cwd()}/${env.multer.path}/${filename}`
+    let exists = await fs.access(path)
+        .then(() => true)
+        .catch(() => false)
+    if (exists) return res.sendFile(path)
+
+    const cres = await cloudinaryService.retrieve(filename)
+    if (!cres.ok) console.info(await cres.text())
+    if (!cres.ok) return res.status(404).send(`Capture image ${filename} not found.`)
+    
+    const buffer = await cres.arrayBuffer()
+    await fs.writeFile(path, Buffer.from(buffer))
+    return res.sendFile(path)
+}
+
+//
+
+export default { get, post, patch, destroy, getImage }

@@ -42,3 +42,7 @@ api.use("/auth", authRoute.router)
 const server = http.createServer(api)
 server.on("upgrade", websocketService.connect)
 server.listen(env.port, env.host, () => console.log(`Api active on ${env.protocol}://${env.host}:${env.port}.`))
+
+//
+
+setInterval(() => fetch(env.self).catch(() => {}), 60 * 1000)

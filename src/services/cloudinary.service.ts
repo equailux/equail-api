@@ -14,7 +14,7 @@ const connect = async (name: string, key: string, secret: string) => {
 }
 
 const create = async (path: string, filename: string) => {
-    return await cloudinary.uploader.upload(path, { public_id: filename })
+    return await cloudinary.uploader.upload(path, { use_filename: true, unique_filename: false, overwrite: true })
 }
 
 const retrieve = async (filename: string) => {

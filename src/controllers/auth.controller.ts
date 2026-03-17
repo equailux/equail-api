@@ -28,12 +28,25 @@ const signIn: RequestHandler = async (req, res, next) => {
 
     const payload = UserSafeSchema.parse(user)
     const token = jwt.sign(payload, env.jwt.signInSecret, { expiresIn: "1Hour" })
-    res.send({ user: payload, token })
+
+    res.cookie("token", token, {
+        maxAge: 24 * 60 * 60 * 1000,
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+    })
+
+    res.send(payload)
 }
 
 const signOut: RequestHandler = async (req, res, next) => {
-    if (!req.user) return res.status(401).send("Authorization is required.")
-    res.status(204).send("Kindly remove credentials.")
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+    })
+
+    res.status(204).send("User signed-out successfully.")
 }
 
 const changeName: RequestHandler = async (req, res, next) => {

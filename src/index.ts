@@ -1,6 +1,7 @@
 import express from "express"
 import http from "http"
 import cors from "cors"
+import cookieParser from "cookie-parser"
 import logMiddleware from "@/middlewares/log.middleware.js"
 import env from "@/config/env.config.js"
 import admin from "@/boot/admin.boot.js"
@@ -30,7 +31,8 @@ await app.boot()
 
 //
 
-api.use(cors())
+api.use(cors({ origin: env.cors.origin, credentials: true }))
+api.use(cookieParser())
 api.use(express.json())
 api.use(express.urlencoded({ extended: true }))
 api.use(logMiddleware.log)

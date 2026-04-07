@@ -8,6 +8,9 @@ import { User, userAttributes, userOptions } from "@/models/user.model.js"
 import { Otp, otpAttributes, otpOptions } from "@/models/otp.model.js"
 import { Settings, settingsAttributes, settingsOptions } from "@/models/settings.model.js"
 import { Remark, remarkAttributes, remarkOptions } from "@/models/remark.model.js"
+import { Account, accountAttributes, accountOptions } from "@/models/account.model.js"
+import { Session, sessionAttributes, sessionOptions } from "@/models/session.model.js"
+import { Verification, verificationAttributes, verificationOptions } from "@/models/verification.model.js"
 
 //
 
@@ -24,12 +27,23 @@ const boot = async () => {
     const options: Options = { ...(!!certificate && { dialectOptions: { ssl: { ca } } }) }
     const sequelize = new Sequelize(`${url}/${name}`, { ...options, logging: false })
 
+    // --- Better-Auths
+    User.init(userAttributes, userOptions(sequelize))
+    Account.init(accountAttributes, accountOptions(sequelize))
+    Session.init(sessionAttributes, sessionOptions(sequelize))
+    Verification.init(verificationAttributes, verificationOptions(sequelize))    
+
+    User.hasMany(Account, { foreignKey: "userId", onDelete: "CASCADE" })
+    User.hasMany(Session, { foreignKey: "userId", onDelete: "CASCADE" })
+    Account.belongsTo(User, { as: "user", foreignKey: "userId" })
+    Session.belongsTo(User, { as: "user", foreignKey: "userId" })
+
+    // --- Models & Assocs
     Capture.init(captureAttributes, captureOptions(sequelize))
     Detection.init(detectionAttributes, detectionOptions(sequelize))
     Mortality.init(mortalityAttributes, mortalityOptions(sequelize))
     Otp.init(otpAttributes, otpOptions(sequelize))
     Reading.init(readingAttributes, readingOptions(sequelize))
-    User.init(userAttributes, userOptions(sequelize))
     Settings.init(settingsAttributes, settingsOptions(sequelize))
     Remark.init(remarkAttributes, remarkOptions(sequelize))
 

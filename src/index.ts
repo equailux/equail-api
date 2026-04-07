@@ -9,7 +9,6 @@ import env from "@/config/env.config.js"
 import admin from "@/boot/admin.boot.js"
 import database from "@/boot/database.boot.js"
 import apiRoute from "@/routes/api.route.js"
-import authRoute from "@/routes/auth.route.js"
 import mail from "@/boot/mail.boot.js"
 import cloudflared from "@/boot/cloudflared.boot.js"
 import websocketService from "@/services/websocket.service.js"
@@ -42,7 +41,6 @@ api.use(express.urlencoded({ extended: true }))
 
 api.get("/", (_, res) => res.send("I am api only."))
 api.use("/api", apiRoute.router)
-api.use("/auth", authRoute.router)
 
 const server = http.createServer(api)
 server.on("upgrade", websocketService.connect)

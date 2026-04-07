@@ -1,14 +1,15 @@
 import env from "@/config/env.config.js"
-import bcrypt from "bcrypt"
-import { User } from "@/models/user.model.js"
+import authLib from "@/lib/auth.lib.js"
 
 //
 
 const boot = async () => {
     if (!env.boot.admin) return console.info(`Admin boot skipped.`)
-    const { name, email } = env.admin
-    const password = await bcrypt.hash(env.admin.password, 10)
-    const [_, created] = await User.findOrCreate({ where: { email }, defaults: { name, email, password } })
+    const { name, email, password } = env.admin
+    const created = await authLib.api
+        .signUpEmail({ body: { name, email, password } })
+        .then(() => true)
+        .catch(() => false)
     console.info(`Admin ${created ? "created" : "found"} successfully.`)
 }
 

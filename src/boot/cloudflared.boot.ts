@@ -12,10 +12,9 @@ const boot = async () => {
     const url = cloudflaredService.getUrl()
     console.info(`Cloudflared connected on ${url}.`)
 
-    const user = await User.findOne({ where: {} }) as User
-    const body = JSON.stringify({ url, hash: user.password, email: user.email })
+    const body = JSON.stringify({ target: url })
     const headers = { "Content-Type": "application/json" }
-    await fetch(`${env.proxy.url}/api`, { method: "POST", body, headers })
+    await fetch(`${env.proxy.url}/target`, { method: "POST", body, headers })
         .then(async (res) => { if (!res.ok) throw new Error(await res.text()) })
     console.info(`Cloudflared url sent to proxy.`)
 

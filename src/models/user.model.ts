@@ -9,10 +9,11 @@ import type {
 //
 
 class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
-    declare id: CreationOptional<number>
+    declare id: CreationOptional<string>
     declare name: string
     declare email: string
-    declare password: string
+    declare emailVerified: boolean
+    declare image: CreationOptional<string>
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
 }
@@ -21,9 +22,10 @@ class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
 
 const userAttributes: ModelAttributes<User, InferAttributes<User>> = {
     id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: true,
+        allowNull: false,
+        autoIncrement: false,
     },
     name: {
         type: DataTypes.STRING,
@@ -34,9 +36,13 @@ const userAttributes: ModelAttributes<User, InferAttributes<User>> = {
         allowNull: false,
         unique: "email",
     },
-    password: {
-        type: DataTypes.STRING,
+    emailVerified: {
+        type: DataTypes.BOOLEAN,
         allowNull: false,
+    },
+    image: {
+        type: DataTypes.STRING,
+        allowNull: true,
     },
     createdAt: {
         type: DataTypes.DATE,
@@ -54,7 +60,7 @@ const userAttributes: ModelAttributes<User, InferAttributes<User>> = {
 
 const userOptions = (sequelize: Sequelize): InitOptions<User> => ({
     sequelize,
-    tableName: "users",
+    tableName: "user",
     timestamps: true,
 })
 

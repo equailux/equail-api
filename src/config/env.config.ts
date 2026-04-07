@@ -8,7 +8,6 @@ const env = {
     protocol: process.env.PROTOCOL || "",
     cors: { origins: (process.env.CORS_ORIGINS || "").split(", ") },
     dev: { email: process.env.DEV_EMAIL || "" },
-    jwt: { signInSecret: process.env.JWT_SIGN_IN_SECRET || "" },
     multer: { path: process.env.MULTER_PATH || "" },
     proxy: { url: process.env.PROXY_URL || "" },
     boot: {

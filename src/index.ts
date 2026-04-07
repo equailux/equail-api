@@ -31,7 +31,7 @@ await app.boot()
 
 //
 
-api.use(cors({ origin: env.cors.origin, credentials: true }))
+api.use(cors({ origin: env.cors.origins, credentials: true }))
 api.use(cookieParser())
 api.use(express.json())
 api.use(express.urlencoded({ extended: true }))

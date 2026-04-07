@@ -2,6 +2,8 @@ import express from "express"
 import http from "http"
 import cors from "cors"
 import cookieParser from "cookie-parser"
+import authLib from "@/lib/auth.lib.js"
+import { toNodeHandler } from "better-auth/node"
 import logMiddleware from "@/middlewares/log.middleware.js"
 import env from "@/config/env.config.js"
 import admin from "@/boot/admin.boot.js"
@@ -31,11 +33,12 @@ await app.boot()
 
 //
 
+api.use(logMiddleware.log)
 api.use(cors({ origin: env.cors.origins, credentials: true }))
+api.all("/api/auth/*splat", toNodeHandler(authLib))
 api.use(cookieParser())
 api.use(express.json())
 api.use(express.urlencoded({ extended: true }))
-api.use(logMiddleware.log)
 
 api.get("/", (_, res) => res.send("I am api only."))
 api.use("/api", apiRoute.router)

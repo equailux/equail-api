@@ -1,4 +1,5 @@
 import envConfig from "@/config/env.config.js"
+import authHook from "@/hooks/auth.hook.js"
 import { BaseURLConfig, betterAuth } from "better-auth"
 import { createPool } from "mysql2/promise"
 
@@ -26,7 +27,10 @@ const baseURL: BaseURLConfig = {
 const authLib = betterAuth({
     baseURL,
     database: pool,
-    emailAndPassword: { enabled: true },
+    emailAndPassword: {
+        enabled: true,
+        sendResetPassword: authHook.onSendResetPassword,
+    },
 })
 
 //

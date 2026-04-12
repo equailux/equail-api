@@ -11,6 +11,7 @@ import { Remark, remarkAttributes, remarkOptions } from "@/models/remark.model.j
 import { Account, accountAttributes, accountOptions } from "@/models/account.model.js"
 import { Session, sessionAttributes, sessionOptions } from "@/models/session.model.js"
 import { Verification, verificationAttributes, verificationOptions } from "@/models/verification.model.js"
+import { Threshold, thresholdAttributes, thresholdOptions } from "@/models/threshold.model.js"
 
 //
 
@@ -46,6 +47,7 @@ const boot = async () => {
     Reading.init(readingAttributes, readingOptions(sequelize))
     Settings.init(settingsAttributes, settingsOptions(sequelize))
     Remark.init(remarkAttributes, remarkOptions(sequelize))
+    Threshold.init(thresholdAttributes, thresholdOptions(sequelize))
 
     Capture.hasMany(Detection, { foreignKey: "captureId", onDelete: "CASCADE" })
     Capture.hasMany(Remark, { foreignKey: "captureId", onDelete: "CASCADE" })

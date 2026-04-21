@@ -11,11 +11,12 @@ import type {
 
 class Threshold extends Model<InferAttributes<Threshold>, InferCreationAttributes<Threshold>> {
     declare id: CreationOptional<number>
+    declare name: string
     declare icon: string
     declare value: number
-    declare reading: string
     declare message: string
     declare operator: string
+    declare sensorId: ForeignKey<number>
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
 }
@@ -28,16 +29,16 @@ const thresholdAttributes: ModelAttributes<Threshold, InferAttributes<Threshold>
         primaryKey: true,
         autoIncrement: true,
     },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
     icon: {
         type: DataTypes.STRING,
         allowNull: false,
     },
     value: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-    },
-    reading: {
-        type: DataTypes.STRING,
         allowNull: false,
     },
     message: {
@@ -47,6 +48,11 @@ const thresholdAttributes: ModelAttributes<Threshold, InferAttributes<Threshold>
     operator: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    sensorId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: { model: "sensors", key: "id" }
     },
     createdAt: {
         type: DataTypes.DATE,

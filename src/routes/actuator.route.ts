@@ -1,0 +1,13 @@
+import express from "express"
+import actuatorController from "@/controllers/actuator.controller.js"
+
+//
+
+const router = express.Router({ mergeParams: true })
+router.get("/", actuatorController.get)
+router.patch("/:aid", actuatorController.patch)
+router.delete("/:aid", actuatorController.destroy)
+
+//
+
+export default { router }

@@ -41,7 +41,7 @@ const readingAttributes: ModelAttributes<Reading, InferAttributes<Reading>> = {
         allowNull: false,
     },
     sensorId: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: { model: "sensors", key: "id" }
     },

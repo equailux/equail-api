@@ -5,6 +5,7 @@ import thresholdController from "@/controllers/threshold.controller.js"
 
 const router = express.Router({ mergeParams: true })
 router.get("/", thresholdController.get)
+router.post("/sensor/:sid", thresholdController.post)
 router.patch("/:tid", thresholdController.patch)
 router.delete("/:tid", thresholdController.destroy)
 

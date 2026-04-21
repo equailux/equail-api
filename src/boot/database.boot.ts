@@ -12,6 +12,7 @@ import { Account, accountAttributes, accountOptions } from "@/models/account.mod
 import { Session, sessionAttributes, sessionOptions } from "@/models/session.model.js"
 import { Verification, verificationAttributes, verificationOptions } from "@/models/verification.model.js"
 import { Threshold, thresholdAttributes, thresholdOptions } from "@/models/threshold.model.js"
+import { Esp, espAttributes, espOptions } from "@/models/esp.model.js"
 
 //
 
@@ -42,11 +43,12 @@ const boot = async () => {
     // --- Models & Assocs
     Capture.init(captureAttributes, captureOptions(sequelize))
     Detection.init(detectionAttributes, detectionOptions(sequelize))
+    Esp.init(espAttributes, espOptions(sequelize))
     Mortality.init(mortalityAttributes, mortalityOptions(sequelize))
     Otp.init(otpAttributes, otpOptions(sequelize))
     Reading.init(readingAttributes, readingOptions(sequelize))
-    Settings.init(settingsAttributes, settingsOptions(sequelize))
     Remark.init(remarkAttributes, remarkOptions(sequelize))
+    Settings.init(settingsAttributes, settingsOptions(sequelize))
     Threshold.init(thresholdAttributes, thresholdOptions(sequelize))
 
     Capture.hasMany(Detection, { foreignKey: "captureId", onDelete: "CASCADE" })

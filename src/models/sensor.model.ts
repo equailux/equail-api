@@ -36,7 +36,7 @@ const sensorAttributes: ModelAttributes<Sensor, InferAttributes<Sensor>> = {
         allowNull: false,
     },
     espId: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: { model: "esps", key: "id" }
     },

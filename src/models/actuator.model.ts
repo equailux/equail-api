@@ -36,7 +36,7 @@ const actuatorAttributes: ModelAttributes<Actuator, InferAttributes<Actuator>> =
         allowNull: false,
     },
     espId: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
         allowNull: false,
         references: { model: "esps", key: "id" }
     },

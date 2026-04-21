@@ -61,7 +61,9 @@ const boot = async () => {
     Detection.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
     Esp.hasMany(Actuator, { foreignKey: "espId", onDelete: "CASCADE" })
     Esp.hasMany(Sensor, { foreignKey: "espId", onDelete: "CASCADE" })
+    Reading.belongsTo(Sensor, { as: "sensor", foreignKey: "sensorId" })
     Remark.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
+    Sensor.hasMany(Reading, { foreignKey: "espId", onDelete: "CASCADE" })
     Sensor.belongsTo(Esp, { as: "esp", foreignKey: "espId" })
 
     await sequelize.authenticate()

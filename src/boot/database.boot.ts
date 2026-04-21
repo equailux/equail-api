@@ -14,6 +14,7 @@ import { Verification, verificationAttributes, verificationOptions } from "@/mod
 import { Threshold, thresholdAttributes, thresholdOptions } from "@/models/threshold.model.js"
 import { Esp, espAttributes, espOptions } from "@/models/esp.model.js"
 import { Sensor, sensorAttributes, sensorOptions } from "@/models/sensor.model.js"
+import { Actuator, actuatorAttributes, actuatorOptions } from "@/models/actuator.model.js"
 
 //
 
@@ -42,6 +43,7 @@ const boot = async () => {
     Session.belongsTo(User, { as: "user", foreignKey: "userId" })
 
     // --- Models & Assocs
+    Actuator.init(actuatorAttributes, actuatorOptions(sequelize))
     Capture.init(captureAttributes, captureOptions(sequelize))
     Detection.init(detectionAttributes, detectionOptions(sequelize))
     Esp.init(espAttributes, espOptions(sequelize))
@@ -53,9 +55,11 @@ const boot = async () => {
     Settings.init(settingsAttributes, settingsOptions(sequelize))
     Threshold.init(thresholdAttributes, thresholdOptions(sequelize))
 
+    Actuator.belongsTo(Esp, { as: "esp", foreignKey: "espId" })
     Capture.hasMany(Detection, { foreignKey: "captureId", onDelete: "CASCADE" })
     Capture.hasMany(Remark, { foreignKey: "captureId", onDelete: "CASCADE" })
     Detection.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
+    Esp.hasMany(Actuator, { foreignKey: "espId", onDelete: "CASCADE" })
     Esp.hasMany(Sensor, { foreignKey: "espId", onDelete: "CASCADE" })
     Remark.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
     Sensor.belongsTo(Esp, { as: "esp", foreignKey: "espId" })

@@ -4,6 +4,7 @@ import type {
     InferAttributes,
     CreationOptional,
     InferCreationAttributes,
+    ForeignKey,
 } from "sequelize"
 
 //
@@ -13,6 +14,7 @@ class Reading extends Model<InferAttributes<Reading>, InferCreationAttributes<Re
     declare name: string
     declare unit: CreationOptional<string>
     declare value: number
+    declare sensorId: ForeignKey<number>
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
 }
@@ -37,6 +39,11 @@ const readingAttributes: ModelAttributes<Reading, InferAttributes<Reading>> = {
     value: {
         type: DataTypes.INTEGER,
         allowNull: false,
+    },
+    sensorId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        references: { model: "sensors", key: "id" }
     },
     createdAt: {
         type: DataTypes.DATE,

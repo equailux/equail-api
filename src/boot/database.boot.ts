@@ -13,6 +13,7 @@ import { Session, sessionAttributes, sessionOptions } from "@/models/session.mod
 import { Verification, verificationAttributes, verificationOptions } from "@/models/verification.model.js"
 import { Threshold, thresholdAttributes, thresholdOptions } from "@/models/threshold.model.js"
 import { Esp, espAttributes, espOptions } from "@/models/esp.model.js"
+import { Sensor, sensorAttributes, sensorOptions } from "@/models/sensor.model.js"
 
 //
 
@@ -48,13 +49,16 @@ const boot = async () => {
     Otp.init(otpAttributes, otpOptions(sequelize))
     Reading.init(readingAttributes, readingOptions(sequelize))
     Remark.init(remarkAttributes, remarkOptions(sequelize))
+    Sensor.init(sensorAttributes, sensorOptions(sequelize))
     Settings.init(settingsAttributes, settingsOptions(sequelize))
     Threshold.init(thresholdAttributes, thresholdOptions(sequelize))
 
     Capture.hasMany(Detection, { foreignKey: "captureId", onDelete: "CASCADE" })
     Capture.hasMany(Remark, { foreignKey: "captureId", onDelete: "CASCADE" })
     Detection.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
+    Esp.hasMany(Sensor, { foreignKey: "espId", onDelete: "CASCADE" })
     Remark.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
+    Sensor.belongsTo(Esp, { as: "esp", foreignKey: "espId" })
 
     await sequelize.authenticate()
     const { sync, alter, force } = env.database

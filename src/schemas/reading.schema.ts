@@ -7,6 +7,7 @@ const ReadingSchema = z.object({
     name: z.string().min(1),
     unit: z.string().default(""),
     value: z.coerce.number(),
+    sensorId: z.coerce.number().int(),
     createdAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
 })

@@ -1,3 +1,4 @@
+import { ThresholdOp } from "@/schemas/threshold.schema.js"
 import { Model, DataTypes, Sequelize, ModelAttributes } from "sequelize"
 import type {
     InitOptions,
@@ -15,7 +16,7 @@ class Threshold extends Model<InferAttributes<Threshold>, InferCreationAttribute
     declare icon: string
     declare value: number
     declare message: string
-    declare operator: string
+    declare operator: ThresholdOp
     declare sensorId: ForeignKey<number>
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
@@ -46,7 +47,7 @@ const thresholdAttributes: ModelAttributes<Threshold, InferAttributes<Threshold>
         allowNull: false,
     },
     operator: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM(...ThresholdOp),
         allowNull: false,
     },
     sensorId: {

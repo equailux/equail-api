@@ -7,14 +7,15 @@ const SensorSchema = z.object({
     tag: z.string().min(1),
     name: z.string().min(1),
     interval: z.coerce.number().int(),
+    lastread: z.coerce.number().int(),
     espId: z.coerce.number().int(),
     createdAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
 })
 
 const SensorQuerySchema = SensorSchema.partial()
-const SensorCreateSchema = SensorSchema.pick({ tag: true, name: true, interval: true })
-const SensorUpdateSchema = SensorSchema.pick({ tag: true, name: true, interval: true }).partial()
+const SensorCreateSchema = SensorSchema.pick({ tag: true, name: true, interval: true, lastread: true })
+const SensorUpdateSchema = SensorSchema.pick({ tag: true, name: true, interval: true, lastread: true }).partial()
 
 //
 

@@ -14,6 +14,7 @@ const ThresholdSchema = z.object({
     value: z.coerce.number(),
     message: z.string(),
     operator: z.enum(ThresholdOp),
+    activated: z.boolean(),
     sensorId: z.coerce.number().int(),
     createdAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
@@ -27,6 +28,7 @@ const ThresholdCreateSchema = ThresholdSchema.pick({
     value: true, 
     message: true, 
     operator: true,
+    activated: true,
 })
 
 const ThresholdUpdateSchema = ThresholdSchema.pick({
@@ -35,6 +37,7 @@ const ThresholdUpdateSchema = ThresholdSchema.pick({
     value: true, 
     message: true, 
     operator: true,
+    activated: true,
 }).partial()
 
 //

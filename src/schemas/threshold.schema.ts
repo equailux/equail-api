@@ -2,7 +2,7 @@ import z from "zod";
 
 //
 
-const ThresholdOp = ["<", "=", ">"] as const
+const ThresholdOp = ["All", "Any"] as const
 type ThresholdOp = (typeof ThresholdOp)[number]
 
 //

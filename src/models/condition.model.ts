@@ -1,3 +1,4 @@
+import { ConditionOp } from "@/schemas/condition.schema.js"
 import { Model, DataTypes, Sequelize, ModelAttributes } from "sequelize"
 import type {
     InitOptions,
@@ -12,7 +13,7 @@ import type {
 class Condition extends Model<InferAttributes<Condition>, InferCreationAttributes<Condition>> {
     declare id: CreationOptional<number>
     declare output: number
-    declare operator: string
+    declare operator: ConditionOp
     declare satisfied: boolean
     declare thresholdId: ForeignKey<number>
     declare createdAt: CreationOptional<Date>
@@ -32,7 +33,7 @@ const conditionAttributes: ModelAttributes<Condition, InferAttributes<Condition>
         allowNull: false,
     },
     operator: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM(...ConditionOp),
         allowNull: false,
     },
     satisfied: {

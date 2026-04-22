@@ -18,8 +18,8 @@ const ConditionSchema = z.object({
 })
 
 const ConditionQuerySchema = ConditionSchema.partial()
-const ConditionCreateSchema = ConditionSchema.pick({ output: true, operator: true })
-const ConditionUpdateSchema = ConditionSchema.pick({ output: true, operator: true }).partial()
+const ConditionCreateSchema = ConditionSchema.pick({ output: true, operator: true, satisfied: true })
+const ConditionUpdateSchema = ConditionSchema.pick({ output: true,  operator: true, satisfied: true }).partial()
 
 //
 

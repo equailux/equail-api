@@ -6,14 +6,15 @@ const ActuatorSchema = z.object({
     id: z.coerce.number().int(),
     tag: z.string().min(1),
     name: z.string().min(1),
+    input: z.coerce.number().int(),
     espId: z.coerce.number().int(),
     createdAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
 })
 
 const ActuatorQuerySchema = ActuatorSchema.partial()
-const ActuatorCreateSchema = ActuatorSchema.pick({ tag: true, name: true })
-const ActuatorUpdateSchema = ActuatorSchema.pick({ tag: true, name: true }).partial()
+const ActuatorCreateSchema = ActuatorSchema.pick({ tag: true, name: true, input: true })
+const ActuatorUpdateSchema = ActuatorSchema.pick({ tag: true, name: true, input: true }).partial()
 
 //
 

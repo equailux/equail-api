@@ -13,6 +13,7 @@ class Actuator extends Model<InferAttributes<Actuator>, InferCreationAttributes<
     declare id: CreationOptional<number>
     declare tag: string
     declare name: string
+    declare input: number
     declare espId: ForeignKey<number>
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
@@ -33,6 +34,10 @@ const actuatorAttributes: ModelAttributes<Actuator, InferAttributes<Actuator>> =
     },
     name: {
         type: DataTypes.STRING,
+        allowNull: false,
+    },
+    input: {
+        type: DataTypes.DECIMAL(5),
         allowNull: false,
     },
     espId: {

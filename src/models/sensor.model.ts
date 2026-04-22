@@ -13,6 +13,7 @@ class Sensor extends Model<InferAttributes<Sensor>, InferCreationAttributes<Sens
     declare id: CreationOptional<number>
     declare tag: string
     declare name: string
+    declare interval: number
     declare espId: ForeignKey<number>
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
@@ -33,6 +34,10 @@ const sensorAttributes: ModelAttributes<Sensor, InferAttributes<Sensor>> = {
     },
     name: {
         type: DataTypes.STRING,
+        allowNull: false,
+    },
+    interval: {
+        type: DataTypes.INTEGER,
         allowNull: false,
     },
     espId: {

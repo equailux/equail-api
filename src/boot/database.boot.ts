@@ -15,6 +15,8 @@ import { Threshold, thresholdAttributes, thresholdOptions } from "@/models/thres
 import { Esp, espAttributes, espOptions } from "@/models/esp.model.js"
 import { Sensor, sensorAttributes, sensorOptions } from "@/models/sensor.model.js"
 import { Actuator, actuatorAttributes, actuatorOptions } from "@/models/actuator.model.js"
+import { Action, actionAttributes, actionOptions } from "@/models/action.model.js"
+import { Condition, conditionAttributes, conditionOptions } from "@/models/condition.model.js"
 
 //
 
@@ -43,8 +45,10 @@ const boot = async () => {
     Session.belongsTo(User, { as: "user", foreignKey: "userId" })
 
     // --- Models & Assocs
+    Action.init(actionAttributes, actionOptions(sequelize))
     Actuator.init(actuatorAttributes, actuatorOptions(sequelize))
     Capture.init(captureAttributes, captureOptions(sequelize))
+    Condition.init(conditionAttributes, conditionOptions(sequelize))
     Detection.init(detectionAttributes, detectionOptions(sequelize))
     Esp.init(espAttributes, espOptions(sequelize))
     Mortality.init(mortalityAttributes, mortalityOptions(sequelize))
@@ -55,16 +59,24 @@ const boot = async () => {
     Settings.init(settingsAttributes, settingsOptions(sequelize))
     Threshold.init(thresholdAttributes, thresholdOptions(sequelize))
 
+    Action.belongsTo(Actuator, { as: "actuator", foreignKey: "actuatorId" })
+    Action.belongsTo(Threshold, { as: "threshold", foreignKey: "thresholdId" })
     Actuator.belongsTo(Esp, { as: "esp", foreignKey: "espId" })
+    Actuator.hasMany(Action, { foreignKey: "actuatorId", onDelete: "CASCADE" })
     Capture.hasMany(Detection, { foreignKey: "captureId", onDelete: "CASCADE" })
     Capture.hasMany(Remark, { foreignKey: "captureId", onDelete: "CASCADE" })
+    Condition.belongsTo(Threshold, { as: "threshold", foreignKey: "thresholdId" })
     Detection.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
     Esp.hasMany(Actuator, { foreignKey: "espId", onDelete: "CASCADE" })
     Esp.hasMany(Sensor, { foreignKey: "espId", onDelete: "CASCADE" })
     Reading.belongsTo(Sensor, { as: "sensor", foreignKey: "sensorId" })
     Remark.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
-    Sensor.hasMany(Reading, { foreignKey: "espId", onDelete: "CASCADE" })
+    Sensor.hasMany(Reading, { foreignKey: "sensorId", onDelete: "CASCADE" })
+    Sensor.hasMany(Threshold, { foreignKey: "sensorId", onDelete: "CASCADE" })
     Sensor.belongsTo(Esp, { as: "esp", foreignKey: "espId" })
+    Threshold.belongsTo(Sensor, { as: "sensor", foreignKey: "sensorId" })
+    Threshold.hasMany(Action, { foreignKey: "thresholdId", onDelete: "CASCADE" })
+    Threshold.hasMany(Condition, { foreignKey: "thresholdId", onDelete: "CASCADE" })
 
     await sequelize.authenticate()
     const { sync, alter, force } = env.database

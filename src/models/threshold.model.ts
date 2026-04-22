@@ -14,7 +14,6 @@ class Threshold extends Model<InferAttributes<Threshold>, InferCreationAttribute
     declare id: CreationOptional<number>
     declare name: string
     declare icon: string
-    declare value: number
     declare message: string
     declare operator: ThresholdOp
     declare activated: boolean
@@ -37,10 +36,6 @@ const thresholdAttributes: ModelAttributes<Threshold, InferAttributes<Threshold>
     },
     icon: {
         type: DataTypes.STRING,
-        allowNull: false,
-    },
-    value: {
-        type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
     message: {

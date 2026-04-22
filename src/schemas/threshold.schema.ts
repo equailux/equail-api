@@ -11,7 +11,6 @@ const ThresholdSchema = z.object({
     id: z.coerce.number().int(),
     name: z.string().min(1),
     icon: z.string(),
-    value: z.coerce.number(),
     message: z.string(),
     operator: z.enum(ThresholdOp),
     activated: z.boolean(),
@@ -25,7 +24,6 @@ const ThresholdQuerySchema = ThresholdSchema.partial()
 const ThresholdCreateSchema = ThresholdSchema.pick({
     name: true, 
     icon: true, 
-    value: true, 
     message: true, 
     operator: true,
     activated: true,
@@ -34,7 +32,6 @@ const ThresholdCreateSchema = ThresholdSchema.pick({
 const ThresholdUpdateSchema = ThresholdSchema.pick({
     name: true, 
     icon: true, 
-    value: true, 
     message: true, 
     operator: true,
     activated: true,

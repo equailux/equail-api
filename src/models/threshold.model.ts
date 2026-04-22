@@ -17,6 +17,7 @@ class Threshold extends Model<InferAttributes<Threshold>, InferCreationAttribute
     declare value: number
     declare message: string
     declare operator: ThresholdOp
+    declare activated: boolean
     declare sensorId: ForeignKey<number>
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
@@ -49,6 +50,11 @@ const thresholdAttributes: ModelAttributes<Threshold, InferAttributes<Threshold>
     operator: {
         type: DataTypes.ENUM(...ThresholdOp),
         allowNull: false,
+    },
+    activated: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
     },
     sensorId: {
         type: DataTypes.INTEGER,

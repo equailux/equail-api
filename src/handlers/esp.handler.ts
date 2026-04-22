@@ -5,7 +5,7 @@ import appWebsocket from "@/websockets/app.websocket.js";
 
 //
 
-const onCreateReading: WsEventHandler<ReadingCreateSchema> = async (data) => {
+const onCreateReading: WsEventHandler<ReadingCreateSchema & { sensorId: number }> = async (data) => {
     const readings = await Reading.bulkCreate(data)
     const values = readings.map((r) => r.dataValues)
     const event: WsEvent = { name: "Reading", query: "Create", data: values }

@@ -8,7 +8,6 @@ const SensorSchema = z.object({
     name: z.string().min(1),
     interval: z.coerce.number().int(),
     lastread: z.coerce.number().int(),
-    espId: z.coerce.number().int(),
     createdAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
 })

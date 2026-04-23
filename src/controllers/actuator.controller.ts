@@ -23,13 +23,10 @@ const get: RequestHandler = async (req, res, next) => {
 }
 
 const post: RequestHandler = async (req, res, next) => {
-    const eid = req.params.eid as string
-    if (!eid) return res.status(400).send("Esp id required.")
-    
     const { data, error, success } = ActuatorCreateSchema.safeParse(req.body)
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
 
-    const actuator = await Actuator.create({ ...data, espId: parseInt(eid) })
+    const actuator = await Actuator.create({ ...data })
     res.send(actuator.dataValues)
 }
 

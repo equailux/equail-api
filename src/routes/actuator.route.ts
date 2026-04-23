@@ -5,6 +5,7 @@ import actuatorController from "@/controllers/actuator.controller.js"
 
 const router = express.Router({ mergeParams: true })
 router.get("/", actuatorController.get)
+router.post("/", actuatorController.post)
 router.patch("/:aid", actuatorController.patch)
 router.delete("/:aid", actuatorController.destroy)
 

@@ -23,13 +23,10 @@ const get: RequestHandler = async (req, res, next) => {
 }
 
 const post: RequestHandler = async (req, res, next) => {
-    const eid = req.params.eid as string
-    if (!eid) return res.status(400).send("Esp id required.")
-    
     const { data, error, success } = SensorCreateSchema.safeParse(req.body)
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
 
-    const sensor = await Sensor.create({ ...data, espId: parseInt(eid) })
+    const sensor = await Sensor.create({ ...data })
     res.send(sensor.dataValues)
 }
 

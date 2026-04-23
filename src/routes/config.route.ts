@@ -1,11 +1,13 @@
 import express from "express"
-import espRoute from "@/routes/esp.route.js"
+import sensorRoute from "@/routes/sensor.route.js"
+import actuatorRoute from "@/routes/actuator.route.js"
 import thresholdRoute from "@/routes/threshold.route.js"
 
 //
 
 const router = express.Router()
-router.use("/esp", espRoute.router)
+router.use("/sensor", sensorRoute.router)
+router.use("/actuator", actuatorRoute.router)
 router.use("/threshold", thresholdRoute.router)
 
 //

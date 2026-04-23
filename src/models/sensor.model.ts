@@ -15,7 +15,6 @@ class Sensor extends Model<InferAttributes<Sensor>, InferCreationAttributes<Sens
     declare name: string
     declare interval: number
     declare lastread: number
-    declare espId: ForeignKey<number>
     declare createdAt: CreationOptional<Date>
     declare updatedAt: CreationOptional<Date>
 }
@@ -44,11 +43,6 @@ const sensorAttributes: ModelAttributes<Sensor, InferAttributes<Sensor>> = {
     lastread: {
         type: DataTypes.BIGINT,
         allowNull: false,
-    },
-    espId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: { model: "esps", key: "id" }
     },
     createdAt: {
         type: DataTypes.DATE,

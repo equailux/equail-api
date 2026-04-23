@@ -7,7 +7,6 @@ const ActuatorSchema = z.object({
     tag: z.string().min(1),
     name: z.string().min(1),
     input: z.coerce.number().int(),
-    espId: z.coerce.number().int(),
     createdAt: z.coerce.date(),
     updatedAt: z.coerce.date(),
 })

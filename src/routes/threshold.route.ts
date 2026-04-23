@@ -17,7 +17,7 @@ router.use("/condition", conditionRoute.router)
 router.post("/:tid/condition", conditionController.post)
 
 router.use("/action", actionRoute.router)
-router.post("/:aid/action", actionController.post)
+router.post("/:tid/action/actuator/:aid", actionController.post)
 
 //
 

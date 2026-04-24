@@ -6,7 +6,7 @@ import espWebsocket from "@/websockets/esp.websocket.js";
 
 // --- Main
 const loop = async () => {
-    const sensors = await Sensor.findAll({ raw: true, attributes: ["id", "tag",] })
+    const sensors = await Sensor.findAll({ raw: true, attributes: ["id", "tag", "interval", "lastread"] })
     const readables = sensors.filter(s => Date.now() - s.lastread >= s.interval)
     await Promise.all(readables.map(r => read(r)))
 }

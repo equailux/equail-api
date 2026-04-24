@@ -18,18 +18,31 @@ const pool = createPool({
     ...(!!certificate && { ssl: { ca } }),
 })
 
-const baseUrl = `${envConfig.protocol}://${envConfig.host}:${envConfig.port}`
+const baseUrl = envConfig.self || `${envConfig.protocol}://${envConfig.host}:${envConfig.port}`
+const allowedHosts = [baseUrl, ...envConfig.cors.origins].map(o => new URL(o).host).filter(Boolean)
+
 const baseURL: BaseURLConfig = {
-    allowedHosts: [baseUrl, ...envConfig.cors.origins],
+    allowedHosts,
+    protocol: "auto",
     fallback: baseUrl,
 }
 
 const authLib = betterAuth({
     baseURL,
+    trustedOrigins: envConfig.cors.origins.filter(Boolean),
     database: pool,
     emailAndPassword: {
         enabled: true,
         sendResetPassword: authHook.onSendResetPassword,
+    },
+    advanced: {
+        trustedProxyHeaders: true,
+        useSecureCookies: true,
+        defaultCookieAttributes: {
+            sameSite: "none",
+            secure: true,
+            partitioned: true,
+        },
     },
 })
 

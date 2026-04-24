@@ -1,6 +1,7 @@
 import { Actuator } from "@/models/actuator.model.js"
 import { ActuatorCreateSchema, ActuatorQuerySchema, ActuatorUpdateSchema } from "@/schemas/actuator.schema.js"
 import { PaginationSchema } from "@/schemas/pagination.schema.js"
+import espWebsocket from "@/websockets/esp.websocket.js"
 import { type RequestHandler } from "express"
 import { Op } from "sequelize"
 
@@ -42,6 +43,7 @@ const patch: RequestHandler = async (req, res, next) => {
 
     await actuator.update(data)
     res.send(actuator.dataValues)
+    await espWebsocket.broadcast({ name: "Actuator", data: [actuator.dataValues], query: "Update" })
 }
 
 const destroy: RequestHandler = async (req, res, next) => {

@@ -11,14 +11,16 @@ import conditionModule from "@/modules/condition.module.js";
 import { Action } from "@/models/action.model.js";
 import { Actuator } from "@/models/actuator.model.js";
 import actionModule from "@/modules/action.module.js";
+import z from "zod";
 
 //
 
 const onCreateReading: WsEventHandler<ReadingCreateSchema & { tag: string }> = async (data) => {
     // --- Map tags to sensors
-    const tags = data.map(s => s.tag)
+    const parsed = z.array(ReadingCreateSchema.loose()).parse(data) as (ReadingCreateSchema & { tag: string })[]
+    const tags = parsed.map(s => s.tag)
     const sensors = await Sensor.findAll({ where: { tag: { [Op.in]: tags } }, raw: true })
-    const mapped = data.map(d => ({ ...d, sensorId: sensors.find(s => s.tag == d.tag)?.id as number | undefined }))
+    const mapped = data.map(d => ({ ...d, sensorId: sensors.find(s => s.tag.toLowerCase() == d.tag.toLowerCase())?.id as number | undefined }))
     const filtered = mapped.filter(m => !!m.sensorId) as (ReadingCreateSchema & { sensorId: number })[]
 
     // --- Create readings from mapped sensorId

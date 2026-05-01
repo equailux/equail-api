@@ -16,6 +16,7 @@ import settings from "@/boot/settings.boot.js"
 import esp from "@/boot/esp.boot.js"
 import app from "@/boot/app.boot.js"
 import cloudinary from "@/boot/cloudinary.boot.js"
+import espRoute from "@/routes/esp.route.js"
 
 //
 
@@ -41,6 +42,7 @@ api.use(express.urlencoded({ extended: true }))
 
 api.get("/", (_, res) => res.send("I am api only."))
 api.use("/api", apiRoute.router)
+api.use("/esp", espRoute.router)
 
 const server = http.createServer(api)
 server.on("upgrade", websocketService.connect)

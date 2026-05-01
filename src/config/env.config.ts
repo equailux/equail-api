@@ -6,6 +6,7 @@ const env = {
     host: process.env.HOST || "",
     self: process.env.SELF || "",
     protocol: process.env.PROTOCOL || "",
+    esp: { api: { key: process.env.ESP_API_KEY || "" } },
     cors: { origins: (process.env.CORS_ORIGINS || "").split(", ") },
     dev: { email: process.env.DEV_EMAIL || "" },
     multer: { path: process.env.MULTER_PATH || "" },

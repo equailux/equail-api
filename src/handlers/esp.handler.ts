@@ -20,7 +20,7 @@ const onCreateReading: WsEventHandler<ReadingCreateSchema & { tag: string }> = a
     const parsed = z.array(ReadingCreateSchema.loose()).parse(data) as (ReadingCreateSchema & { tag: string })[]
     const tags = parsed.map(s => s.tag)
     const sensors = await Sensor.findAll({ where: { tag: { [Op.in]: tags } }, raw: true })
-    const mapped = data.map(d => ({ ...d, sensorId: sensors.find(s => s.tag.toLowerCase() == d.tag.toLowerCase())?.id as number | undefined }))
+    const mapped = parsed.map(d => ({ ...d, sensorId: sensors.find(s => s.tag.toLowerCase() == d.tag.toLowerCase())?.id as number | undefined }))
     const filtered = mapped.filter(m => !!m.sensorId) as (ReadingCreateSchema & { sensorId: number })[]
 
     // --- Create readings from mapped sensorId
@@ -46,7 +46,8 @@ const onCreateReading: WsEventHandler<ReadingCreateSchema & { tag: string }> = a
     await Promise.all([tprms, cprms].flat()).catch(console.error)
 
     // --- Evaluate thresholds without side effect
-    const evaluated = rwtwcmapped.map(r => ({ ...r.threshold, activated: thresholdModule.evaluate(r.threshold!, r.conditions, r.value) }))
+    const evalprms = rwtwcmapped.map(async r => ({ ...r.threshold, activated: await thresholdModule.evaluate(r.threshold!, r.conditions, r.value) }))
+    const evaluated = await Promise.all(evalprms)
     const activated = evaluated.filter(e => e.activated)
 
     // --- Get actions and actuators of the activated thresholds

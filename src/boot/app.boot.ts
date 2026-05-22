@@ -1,6 +1,6 @@
 import env from "@/config/env.config.js"
-import appHandler from "@/handlers/app.handler.js"
-import appWebsocket from "@/websockets/app.websocket.js"
+import appHandler from "@/realtime/handlers/app.handler.js"
+import appWebsocket from "@/realtime/websockets/app.websocket.js"
 
 //
 

@@ -1,5 +1,5 @@
 import env from "@/config/env.config.js"
-import cloudinaryService from "@/services/cloudinary.service.js"
+import cloudinaryService from "@/shared/services/cloudinary.service.js"
 
 //
 

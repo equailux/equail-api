@@ -1,6 +1,6 @@
 import env from "@/config/env.config.js"
-import { Settings } from "@/models/settings.model.js"
-import { SettingsCreateSchema } from "@/schemas/settings.model.js"
+import { Settings } from "@/modules/settings/settings.model.js"
+import { SettingsCreateSchema } from "@/modules/settings/settings.schema.js"
 
 //
 

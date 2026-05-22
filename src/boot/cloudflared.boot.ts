@@ -1,7 +1,7 @@
-import { User } from "@/models/user.model.js"
+import { User } from "@/modules/auth/user.model.js"
 import env from "@/config/env.config.js"
-import cloudflaredService from "@/services/cloudflared.service.js"
-import mailService from "@/services/mail.service.js"
+import cloudflaredService from "@/shared/services/cloudflared.service.js"
+import mailService from "@/shared/services/mail.service.js"
 
 
 

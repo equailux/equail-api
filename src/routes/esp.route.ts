@@ -1,8 +1,8 @@
 import express from "express"
-import espMiddleware from "@/middlewares/esp.middleware.js"
-import uploadMiddleware from "@/middlewares/upload.middleware.js"
-import captureController from "@/controllers/capture.controller.js"
-import detectionController from "@/controllers/detection.controller.js"
+import espMiddleware from "@/shared/middlewares/esp.middleware.js"
+import uploadMiddleware from "@/shared/middlewares/upload.middleware.js"
+import captureController from "@/modules/captures/capture.controller.js"
+import detectionController from "@/modules/detections/detection.controller.js"
 
 //
 

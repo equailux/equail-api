@@ -1,7 +1,7 @@
 import express from "express"
-import sensorRoute from "@/routes/sensor.route.js"
-import actuatorRoute from "@/routes/actuator.route.js"
-import thresholdRoute from "@/routes/threshold.route.js"
+import sensorRoute from "@/modules/sensors/sensor.route.js"
+import actuatorRoute from "@/modules/actuators/actuator.route.js"
+import thresholdRoute from "@/modules/thresholds/threshold.route.js"
 
 //
 

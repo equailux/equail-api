@@ -1,5 +1,5 @@
 import env from "@/config/env.config.js"
-import authLib from "@/lib/auth.lib.js"
+import authLib from "@/modules/auth/auth.lib.js"
 
 //
 

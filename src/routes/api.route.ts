@@ -1,9 +1,9 @@
 import express from "express"
-import captureRoute from "@/routes/capture.route.js"
-import mortalityRoute from "@/routes/mortality.route.js"
-import readingRoute from "@/routes/reading.route.js"
+import captureRoute from "@/modules/captures/capture.route.js"
+import mortalityRoute from "@/modules/mortalities/mortality.route.js"
+import readingRoute from "@/modules/readings/reading.route.js"
 import configRoute from "@/routes/config.route.js"
-import authMiddleware from "@/middlewares/auth.middleware.js"
+import authMiddleware from "@/modules/auth/auth.middleware.js"
 
 //
 

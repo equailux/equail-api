@@ -1,7 +1,7 @@
 import env from "@/config/env.config.js"
-import espHandler from "@/handlers/esp.handler.js"
-import sensorModule from "@/modules/sensor.module.js"
-import espWebsocket from "@/websockets/esp.websocket.js"
+import espHandler from "@/realtime/handlers/esp.handler.js"
+import sensorModule from "@/modules/sensors/sensor.module.js"
+import espWebsocket from "@/realtime/websockets/esp.websocket.js"
 
 //
 

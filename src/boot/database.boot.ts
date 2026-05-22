@@ -5,7 +5,6 @@ import { Detection, detectionAttributes, detectionOptions } from "@/modules/dete
 import { Mortality, mortalityAttributes, mortalityOptions } from "@/modules/mortalities/mortality.model.js"
 import { Reading, readingAttributes, readingOptions } from "@/modules/readings/reading.model.js"
 import { User, userAttributes, userOptions } from "@/modules/auth/user.model.js"
-import { Otp, otpAttributes, otpOptions } from "@/modules/auth/otp.model.js"
 import { Settings, settingsAttributes, settingsOptions } from "@/modules/settings/settings.model.js"
 import { Remark, remarkAttributes, remarkOptions } from "@/modules/remarks/remark.model.js"
 import { Account, accountAttributes, accountOptions } from "@/modules/auth/account.model.js"
@@ -50,7 +49,6 @@ const boot = async () => {
     Condition.init(conditionAttributes, conditionOptions(sequelize))
     Detection.init(detectionAttributes, detectionOptions(sequelize))
     Mortality.init(mortalityAttributes, mortalityOptions(sequelize))
-    Otp.init(otpAttributes, otpOptions(sequelize))
     Reading.init(readingAttributes, readingOptions(sequelize))
     Remark.init(remarkAttributes, remarkOptions(sequelize))
     Sensor.init(sensorAttributes, sensorOptions(sequelize))

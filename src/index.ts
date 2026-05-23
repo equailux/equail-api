@@ -13,6 +13,7 @@ import mail from "@/boot/mail.boot.js"
 import cloudflared from "@/boot/cloudflared.boot.js"
 import websocketService from "@/shared/services/websocket.service.js"
 import settings from "@/boot/settings.boot.js"
+import feed from "@/boot/feed.boot.js"
 import esp from "@/boot/esp.boot.js"
 import app from "@/boot/app.boot.js"
 import cloudinary from "@/boot/cloudinary.boot.js"
@@ -24,6 +25,7 @@ const api = express()
 
 await database.boot()
 await settings.boot()
+await feed.boot()
 await admin.boot()
 await mail.boot()
 await cloudflared.boot()

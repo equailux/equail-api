@@ -7,6 +7,7 @@ const FeedConfigSchema = z.object({
 	servo1Ms: z.coerce.number().int().nonnegative(),
 	servo2Ms: z.coerce.number().int().nonnegative(),
 	stepperMs: z.coerce.number().int().nonnegative(),
+	threshold: z.coerce.number().min(0).max(100),
 	createdAt: z.coerce.date(),
 	updatedAt: z.coerce.date(),
 })

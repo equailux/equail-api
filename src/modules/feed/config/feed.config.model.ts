@@ -8,6 +8,7 @@ class FeedConfig extends Model<InferAttributes<FeedConfig>, InferCreationAttribu
 	declare servo1Ms: number
 	declare servo2Ms: number
 	declare stepperMs: number
+	declare threshold: number
 	declare createdAt: CreationOptional<Date>
 	declare updatedAt: CreationOptional<Date>
 }
@@ -35,6 +36,12 @@ const feedConfigAttributes: ModelAttributes<FeedConfig, InferAttributes<FeedConf
 		type: DataTypes.INTEGER,
 		allowNull: false,
 		defaultValue: 0,
+	},
+	threshold: {
+		type: DataTypes.DECIMAL(5, 2),
+		allowNull: false,
+		defaultValue: 25,
+		validate: { min: 0, max: 100 },
 	},
 	createdAt: {
 		type: DataTypes.DATE,

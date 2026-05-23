@@ -5,9 +5,10 @@ import { type RequestHandler } from "express"
 //
 
 const defaults: FeedConfigCreateSchema = {
-	servo1Ms: 0,
-	servo2Ms: 0,
-	stepperMs: 0,
+	servo1Ms: 5000,
+	servo2Ms: 5000,
+	stepperMs: 10000,
+	threshold: 25,
 }
 
 const findOrCreate = async () => {

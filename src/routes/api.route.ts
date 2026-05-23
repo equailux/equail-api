@@ -2,6 +2,7 @@ import express from "express"
 import captureRoute from "@/modules/captures/capture.route.js"
 import mortalityRoute from "@/modules/mortalities/mortality.route.js"
 import readingRoute from "@/modules/readings/reading.route.js"
+import feedRoute from "@/modules/feed/feed.route.js"
 import configRoute from "@/routes/config.route.js"
 import authMiddleware from "@/modules/auth/auth.middleware.js"
 
@@ -12,6 +13,7 @@ router.use(authMiddleware.requireAuth)
 router.use("/capture", captureRoute.router)
 router.use("/mortality", mortalityRoute.router)
 router.use("/reading", readingRoute.router)
+router.use("/feed", feedRoute.router)
 router.use("/config", configRoute.router)
 
 //

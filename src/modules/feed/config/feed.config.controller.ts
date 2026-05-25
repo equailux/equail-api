@@ -1,18 +1,11 @@
 import { FeedConfig } from "@/modules/feed/config/feed.config.model.js"
-import { FeedConfigCreateSchema, FeedConfigUpdateSchema } from "@/modules/feed/config/feed.config.schema.js"
+import { FeedConfigDefaults, FeedConfigUpdateSchema } from "@/modules/feed/config/feed.config.schema.js"
 import { type RequestHandler } from "express"
 
 //
 
-const defaults: FeedConfigCreateSchema = {
-	servo1Ms: 5000,
-	servo2Ms: 5000,
-	stepperMs: 10000,
-	threshold: 25,
-}
-
 const findOrCreate = async () => {
-	const [config] = await FeedConfig.findOrCreate({ where: { id: 1 }, defaults })
+	const [config] = await FeedConfig.findOrCreate({ where: { id: 1 }, defaults: FeedConfigDefaults })
 	return config
 }
 

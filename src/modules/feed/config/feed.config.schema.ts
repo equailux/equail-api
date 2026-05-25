@@ -25,4 +25,13 @@ type FeedConfigUpdateSchema = z.infer<typeof FeedConfigUpdateSchema>
 
 //
 
-export { FeedConfigSchema, FeedConfigQuerySchema, FeedConfigCreateSchema, FeedConfigUpdateSchema }
+const FeedConfigDefaults: FeedConfigCreateSchema = {
+	servo1Ms: 5000,
+	servo2Ms: 5000,
+	stepperMs: 10000,
+	threshold: 25,
+}
+
+//
+
+export { FeedConfigSchema, FeedConfigQuerySchema, FeedConfigCreateSchema, FeedConfigUpdateSchema, FeedConfigDefaults }

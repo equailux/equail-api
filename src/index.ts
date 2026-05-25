@@ -24,8 +24,8 @@ import firebase from "@/boot/firebase.boot.js"
 
 const api = express()
 
-await firebase.boot()
 await database.boot()
+await firebase.boot()
 await settings.boot()
 await feed.boot()
 await admin.boot()

@@ -18,11 +18,13 @@ import esp from "@/boot/esp.boot.js"
 import app from "@/boot/app.boot.js"
 import cloudinary from "@/boot/cloudinary.boot.js"
 import espRoute from "@/routes/esp.route.js"
+import firebase from "@/boot/firebase.boot.js"
 
 //
 
 const api = express()
 
+await firebase.boot()
 await database.boot()
 await settings.boot()
 await feed.boot()

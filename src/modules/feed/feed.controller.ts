@@ -1,5 +1,6 @@
 import { Feed } from "@/modules/feed/feed.model.js"
 import { FeedCreateSchema, FeedQuerySchema, FeedUpdateSchema } from "@/modules/feed/feed.schema.js"
+import feedModule from "@/modules/feed/feed.module.js"
 import { PaginationSchema } from "@/shared/schemas/pagination.schema.js"
 import { type RequestHandler } from "express"
 import { Op } from "sequelize"
@@ -28,6 +29,7 @@ const post: RequestHandler = async (req, res, next) => {
 
 	const feed = await Feed.create(data)
 	res.send(feed.dataValues)
+	await feedModule.evaluate(feed.level)
 }
 
 const patch: RequestHandler = async (req, res, next) => {

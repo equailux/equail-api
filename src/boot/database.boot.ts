@@ -17,6 +17,7 @@ import { Action, actionAttributes, actionOptions } from "@/modules/actions/actio
 import { Condition, conditionAttributes, conditionOptions } from "@/modules/conditions/condition.model.js"
 import { Feed, feedAttributes, feedOptions } from "@/modules/feed/feed.model.js"
 import { FeedConfig, feedConfigAttributes, feedConfigOptions } from "@/modules/feed/config/feed.config.model.js"
+import { Device, deviceAttributes, deviceOptions } from "@/modules/devices/device.model.js"
 
 //
 
@@ -50,6 +51,7 @@ const boot = async () => {
 	Capture.init(captureAttributes, captureOptions(sequelize))
 	Condition.init(conditionAttributes, conditionOptions(sequelize))
 	Detection.init(detectionAttributes, detectionOptions(sequelize))
+	Device.init(deviceAttributes, deviceOptions(sequelize))
 	Feed.init(feedAttributes, feedOptions(sequelize))
 	FeedConfig.init(feedConfigAttributes, feedConfigOptions(sequelize))
 	Mortality.init(mortalityAttributes, mortalityOptions(sequelize))
@@ -67,6 +69,7 @@ const boot = async () => {
 	Condition.belongsTo(Threshold, { as: "threshold", foreignKey: "thresholdId" })
 	Detection.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
 	Detection.hasMany(Feed, { foreignKey: "detectionId", onDelete: "SET NULL" })
+	Device.belongsTo(User, { as: "user", foreignKey: "userId" })
 	Feed.belongsTo(Detection, { as: "detection", foreignKey: "detectionId" })
 	Reading.belongsTo(Sensor, { as: "sensor", foreignKey: "sensorId" })
 	Remark.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
@@ -75,6 +78,7 @@ const boot = async () => {
 	Threshold.belongsTo(Sensor, { as: "sensor", foreignKey: "sensorId" })
 	Threshold.hasMany(Action, { foreignKey: "thresholdId", onDelete: "CASCADE" })
 	Threshold.hasMany(Condition, { foreignKey: "thresholdId", onDelete: "CASCADE" })
+	User.hasMany(Device, { foreignKey: "userId", onDelete: "CASCADE" })
 
 	await sequelize.authenticate()
 	const { sync, alter, force } = env.database

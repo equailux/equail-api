@@ -1,13 +1,18 @@
+import { Device } from "@/modules/devices/device.model.js"
 import { FeedConfig } from "@/modules/feed/config/feed.config.model.js"
 import { FeedConfigDefaults, FeedConfigSchema } from "@/modules/feed/config/feed.config.schema.js"
 import espWebsocket from "@/realtime/websockets/esp.websocket.js"
+import firebaseService from "@/shared/services/firebase.service.js"
 
 //
 
 const evaluate = async (level: number) => {
 	const config = await findOrCreateConfig()
 	const satisfied = isSatisfied(level, config.threshold)
-	if (satisfied) await execute(config)
+	if (satisfied) {
+		await execute(config)
+		await notifyUsers(level, config).catch(console.error)
+	}
 	return satisfied
 }
 
@@ -19,6 +24,20 @@ const execute = async (config: FeedConfigSchema) => {
 	}
 
 	await espWebsocket.broadcast({ name: "Feed", data: [command], query: "Create" })
+}
+
+const notifyUsers = async (level: number, config: FeedConfigSchema) => {
+	const devices = await Device.findAll({ attributes: ["token"], raw: true })
+	const tokens = devices.map(device => device.token).filter(Boolean)
+	if (!tokens.length) return
+
+	await firebaseService.fcm.sendEachForMulticast({
+		tokens,
+		notification: {
+			title: "Feed Level Low",
+			body: `Feed level is ${level}%, below the configured threshold of ${config.threshold}%.`,
+		},
+	})
 }
 
 //

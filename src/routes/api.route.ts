@@ -5,6 +5,7 @@ import readingRoute from "@/modules/readings/reading.route.js"
 import feedRoute from "@/modules/feed/feed.route.js"
 import configRoute from "@/routes/config.route.js"
 import authMiddleware from "@/modules/auth/auth.middleware.js"
+import deviceRoute from "@/modules/devices/device.route.js"
 
 //
 
@@ -15,6 +16,7 @@ router.use("/mortality", mortalityRoute.router)
 router.use("/reading", readingRoute.router)
 router.use("/feed", feedRoute.router)
 router.use("/config", configRoute.router)
+router.use("/device", deviceRoute.router)
 
 //
 

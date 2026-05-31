@@ -19,6 +19,11 @@ import { Feed, feedAttributes, feedOptions } from "@/modules/feed/feed.model.js"
 import { FeedConfig, feedConfigAttributes, feedConfigOptions } from "@/modules/feed/config/feed.config.model.js"
 import { Device, deviceAttributes, deviceOptions } from "@/modules/devices/device.model.js"
 import { Power, powerAttributes, powerOptions } from "@/modules/power/power.model.js"
+import {
+	PowerInterruption,
+	powerInterruptionAttributes,
+	powerInterruptionOptions,
+} from "@/modules/power/interruption/power.interruption.model.js"
 
 //
 
@@ -57,6 +62,7 @@ const boot = async () => {
 	FeedConfig.init(feedConfigAttributes, feedConfigOptions(sequelize))
 	Mortality.init(mortalityAttributes, mortalityOptions(sequelize))
 	Power.init(powerAttributes, powerOptions(sequelize))
+	PowerInterruption.init(powerInterruptionAttributes, powerInterruptionOptions(sequelize))
 	Reading.init(readingAttributes, readingOptions(sequelize))
 	Remark.init(remarkAttributes, remarkOptions(sequelize))
 	Sensor.init(sensorAttributes, sensorOptions(sequelize))

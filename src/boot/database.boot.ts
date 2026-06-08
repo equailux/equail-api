@@ -19,6 +19,7 @@ import { Feed, feedAttributes, feedOptions } from "@/modules/feed/feed.model.js"
 import { FeedConfig, feedConfigAttributes, feedConfigOptions } from "@/modules/feed/config/feed.config.model.js"
 import { Device, deviceAttributes, deviceOptions } from "@/modules/devices/device.model.js"
 import { Power, powerAttributes, powerOptions } from "@/modules/power/power.model.js"
+import { SystemError, systemErrorAttributes, systemErrorOptions } from "@/modules/system-error/system-error.model.js"
 import {
 	PowerInterruption,
 	powerInterruptionAttributes,
@@ -67,6 +68,7 @@ const boot = async () => {
 	Remark.init(remarkAttributes, remarkOptions(sequelize))
 	Sensor.init(sensorAttributes, sensorOptions(sequelize))
 	Settings.init(settingsAttributes, settingsOptions(sequelize))
+	SystemError.init(systemErrorAttributes, systemErrorOptions(sequelize))
 	Threshold.init(thresholdAttributes, thresholdOptions(sequelize))
 
 	Action.belongsTo(Actuator, { as: "actuator", foreignKey: "actuatorId" })

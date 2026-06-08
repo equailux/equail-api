@@ -1,64 +1,91 @@
-import { Op } from "sequelize";
-import { WsEvent, WsEventHandler } from "@/realtime/schemas/ws.event.schema.js";
-import { Reading } from "@/modules/readings/reading.model.js";
-import { Sensor } from "@/modules/sensors/sensor.model.js";
-import { Threshold } from "@/modules/thresholds/threshold.model.js";
-import { Condition } from "@/modules/conditions/condition.model.js";
-import { ReadingCreateSchema } from "@/modules/readings/reading.schema.js";
-import appWebsocket from "@/realtime/websockets/app.websocket.js";
-import thresholdModule from "@/modules/thresholds/threshold.module.js";
-import conditionModule from "@/modules/conditions/condition.module.js";
-import { Action } from "@/modules/actions/action.model.js";
-import { Actuator } from "@/modules/actuators/actuator.model.js";
-import actionModule from "@/modules/actions/action.module.js";
-import z from "zod";
+import { Op } from "sequelize"
+import { WsEvent, WsEventHandler } from "@/realtime/schemas/ws.event.schema.js"
+import { Reading } from "@/modules/readings/reading.model.js"
+import { Sensor } from "@/modules/sensors/sensor.model.js"
+import { Threshold } from "@/modules/thresholds/threshold.model.js"
+import { Condition } from "@/modules/conditions/condition.model.js"
+import { ReadingCreateSchema } from "@/modules/readings/reading.schema.js"
+import appWebsocket from "@/realtime/websockets/app.websocket.js"
+import thresholdModule from "@/modules/thresholds/threshold.module.js"
+import conditionModule from "@/modules/conditions/condition.module.js"
+import { Action } from "@/modules/actions/action.model.js"
+import { Actuator } from "@/modules/actuators/actuator.model.js"
+import actionModule from "@/modules/actions/action.module.js"
+import systemErrorService from "@/modules/system-error/system-error.service.js"
+import z from "zod"
 
 //
 
-const onCreateReading: WsEventHandler<ReadingCreateSchema & { tag: string }> = async (data) => {
-    // --- Map tags to sensors
-    const parsed = z.array(ReadingCreateSchema.loose()).parse(data) as (ReadingCreateSchema & { tag: string })[]
-    const tags = parsed.map(s => s.tag)
-    const sensors = await Sensor.findAll({ where: { tag: { [Op.in]: tags } }, raw: true })
-    const mapped = parsed.map(d => ({ ...d, sensorId: sensors.find(s => s.tag.toLowerCase() == d.tag.toLowerCase())?.id as number | undefined }))
-    const filtered = mapped.filter(m => !!m.sensorId) as (ReadingCreateSchema & { sensorId: number })[]
+type ReadingPayload = Omit<ReadingCreateSchema, "value"> & { tag: string; value: number | null }
 
-    // --- Create readings from mapped sensorId
-    const readings = await Reading.bulkCreate(filtered, { returning: true })
-    const values = readings.map((r) => r.dataValues)
-    const event: WsEvent = { name: "Reading", query: "Create", data: values }
-    await appWebsocket.broadcast(event)
+//
 
-    // --- Get thresholds and conditions for evaluation
-    const sids = sensors.map(s => s.id)
-    const thresholds = await Threshold.findAll({ where: { sensorId: { [Op.in]: sids } }, raw: true })
-    const tids = thresholds.map(t => t.id)
-    const conditions = await Condition.findAll({ where: { thresholdId: { [Op.in]: tids } }, raw: true })
+const onCreateReading: WsEventHandler<ReadingCreateSchema & { tag: string }> = async data => {
+	const raw = data as ReadingPayload[]
+	const nullReadings = raw.filter(reading => reading.value === null)
+	const validReadings = raw.filter(reading => reading.value !== null)
 
-    // --- Map readings, thresholds, and conditions
-    const rwtmapped = readings.map(r => ({ ...r, threshold: thresholds.find(t => t.sensorId == r.sensorId) }))
-    const rwtfiltered = rwtmapped.filter(r => !!r.threshold)
-    const rwtwcmapped = rwtfiltered.map(r => ({ ...r, conditions: conditions.filter(c => c.thresholdId == r.threshold!.id) }))
+	if (nullReadings.length) await logNullReadings(nullReadings).catch(console.error)
+	if (!validReadings.length) return
 
-    // --- Evaluate thresholds and conditions
-    const tprms = rwtwcmapped.map(r => thresholdModule.evaluate(r.threshold!, r.conditions, r.value))
-    const cprms = rwtwcmapped.map(r => r.conditions.map(c => conditionModule.evaluate(c, r.value))).flat()
-    await Promise.all([tprms, cprms].flat()).catch(console.error)
+	// --- Map tags to sensors
+	const parsed = z.array(ReadingCreateSchema.loose()).parse(validReadings) as (ReadingCreateSchema & { tag: string })[]
+	const tags = parsed.map(s => s.tag)
+	const sensors = await Sensor.findAll({ where: { tag: { [Op.in]: tags } }, raw: true })
+	const mapped = parsed.map(d => ({ ...d, sensorId: sensors.find(s => s.tag.toLowerCase() == d.tag.toLowerCase())?.id as number | undefined }))
+	const filtered = mapped.filter(m => !!m.sensorId) as (ReadingCreateSchema & { sensorId: number })[]
 
-    // --- Evaluate thresholds without side effect
-    const evalprms = rwtwcmapped.map(async r => ({ ...r.threshold, activated: await thresholdModule.evaluate(r.threshold!, r.conditions, r.value) }))
-    const evaluated = await Promise.all(evalprms)
-    const activated = evaluated.filter(e => e.activated)
+	// --- Create readings from mapped sensorId
+	const readings = await Reading.bulkCreate(filtered, { returning: true })
+	const values = readings.map(r => r.dataValues)
+	const event: WsEvent = { name: "Reading", query: "Create", data: values }
+	await appWebsocket.broadcast(event)
 
-    // --- Get actions and actuators of the activated thresholds
-    const atids = activated.map(a => a.id as number)
-    const actions = await Action.findAll({ where: { thresholdId: { [Op.in]: atids } }, raw: true })
-    const aids = actions.map(a => a.actuatorId)
-    const actuators = await Actuator.findAll({ where: { id: { [Op.in]: aids } }, raw: true })
-    
-    // --- Invoke actions with actuators
-    const aamapped = actions.map(a => ({ ...a, actuator: actuators.find(at => at.id == a.actuatorId) }))
-    await Promise.all(aamapped.map(a => actionModule.execute(a, a.actuator!))).catch(console.error)
+	// --- Get thresholds and conditions for evaluation
+	const sids = sensors.map(s => s.id)
+	const thresholds = await Threshold.findAll({ where: { sensorId: { [Op.in]: sids } }, raw: true })
+	const tids = thresholds.map(t => t.id)
+	const conditions = await Condition.findAll({ where: { thresholdId: { [Op.in]: tids } }, raw: true })
+
+	// --- Map readings, thresholds, and conditions
+	const rwtmapped = readings.map(r => ({ ...r, threshold: thresholds.find(t => t.sensorId == r.sensorId) }))
+	const rwtfiltered = rwtmapped.filter(r => !!r.threshold)
+	const rwtwcmapped = rwtfiltered.map(r => ({
+		...r,
+		conditions: conditions.filter(c => c.thresholdId == r.threshold!.id),
+	}))
+
+	// --- Evaluate thresholds and conditions
+	const tprms = rwtwcmapped.map(r => thresholdModule.evaluate(r.threshold!, r.conditions, r.value))
+	const cprms = rwtwcmapped.map(r => r.conditions.map(c => conditionModule.evaluate(c, r.value))).flat()
+	await Promise.all([tprms, cprms].flat()).catch(console.error)
+
+	// --- Evaluate thresholds without side effect
+	const evalprms = rwtwcmapped.map(async r => ({ ...r.threshold, activated: await thresholdModule.evaluate(r.threshold!, r.conditions, r.value) }))
+	const evaluated = await Promise.all(evalprms)
+	const activated = evaluated.filter(e => e.activated)
+
+	// --- Get actions and actuators of the activated thresholds
+	const atids = activated.map(a => a.id as number)
+	const actions = await Action.findAll({ where: { thresholdId: { [Op.in]: atids } }, raw: true })
+	const aids = actions.map(a => a.actuatorId)
+	const actuators = await Actuator.findAll({ where: { id: { [Op.in]: aids } }, raw: true })
+
+	// --- Invoke actions with actuators
+	const aamapped = actions.map(a => ({ ...a, actuator: actuators.find(at => at.id == a.actuatorId) }))
+	await Promise.all(aamapped.map(a => actionModule.execute(a, a.actuator!))).catch(console.error)
+}
+
+const logNullReadings = async (readings: ReadingPayload[]) => {
+	await Promise.all(
+		readings.map(reading => {
+			const label = reading.tag || reading.name || "Unknown"
+			const title = `${label} sensor reading null.`
+			const description = `Received null reading value from ${label} sensor.`
+
+			return systemErrorService.log({ title, description })
+		})
+	)
 }
 
 //

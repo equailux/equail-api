@@ -11,12 +11,8 @@ import conditionModule from "@/modules/conditions/condition.module.js"
 import { Action } from "@/modules/actions/action.model.js"
 import { Actuator } from "@/modules/actuators/actuator.model.js"
 import actionModule from "@/modules/actions/action.module.js"
-import systemErrorService from "@/modules/system-error/system-error.service.js"
+import systemErrorService, { type ReadingPayload } from "@/modules/system-error/system-error.service.js"
 import z from "zod"
-
-//
-
-type ReadingPayload = Omit<ReadingCreateSchema, "value"> & { tag: string; value: number | null }
 
 //
 
@@ -25,7 +21,7 @@ const onCreateReading: WsEventHandler<ReadingCreateSchema & { tag: string }> = a
 	const nullReadings = raw.filter(reading => reading.value === null)
 	const validReadings = raw.filter(reading => reading.value !== null)
 
-	if (nullReadings.length) await logNullReadings(nullReadings).catch(console.error)
+	if (nullReadings.length) await systemErrorService.logNullReadings(nullReadings).catch(console.error)
 	if (!validReadings.length) return
 
 	// --- Map tags to sensors
@@ -75,19 +71,5 @@ const onCreateReading: WsEventHandler<ReadingCreateSchema & { tag: string }> = a
 	const aamapped = actions.map(a => ({ ...a, actuator: actuators.find(at => at.id == a.actuatorId) }))
 	await Promise.all(aamapped.map(a => actionModule.execute(a, a.actuator!))).catch(console.error)
 }
-
-const logNullReadings = async (readings: ReadingPayload[]) => {
-	await Promise.all(
-		readings.map(reading => {
-			const label = reading.tag || reading.name || "Unknown"
-			const title = `${label} sensor reading null.`
-			const description = `Received null reading value from ${label} sensor.`
-
-			return systemErrorService.log({ title, description })
-		})
-	)
-}
-
-//
 
 export default { onCreateReading }

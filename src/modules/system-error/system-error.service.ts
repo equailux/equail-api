@@ -1,11 +1,13 @@
 import { Op } from "sequelize"
 import { SystemError } from "@/modules/system-error/system-error.model.js"
 import { PaginationSchema, type PaginationSchema as Pagination } from "@/shared/schemas/pagination.schema.js"
+import type { ReadingCreateSchema } from "@/modules/readings/reading.schema.js"
 import type { SystemErrorCreateSchema, SystemErrorQuerySchema } from "@/modules/system-error/system-error.schema.js"
 
 //
 
 type SystemErrorFilters = Pagination & SystemErrorQuerySchema
+type ReadingPayload = Omit<ReadingCreateSchema, "value"> & { tag: string; value: number | null }
 
 //
 
@@ -25,6 +27,19 @@ const log = async (data: SystemErrorCreateSchema) => {
 	return SystemError.create(data)
 }
 
+const logNullReadings = async (readings: ReadingPayload[]) => {
+	await Promise.all(
+		readings.map(reading => {
+			const label = reading.tag || reading.name || "Unknown"
+			const title = `${label} sensor reading null.`
+			const description = `Received null reading value from ${label} sensor.`
+
+			return log({ title, description })
+		})
+	)
+}
+
 //
 
-export default { get, log }
+export type { ReadingPayload }
+export default { get, log, logNullReadings }

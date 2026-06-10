@@ -16,6 +16,11 @@ const evaluate = async (level: number) => {
 	return satisfied
 }
 
+const test = async () => {
+	const config = await findOrCreateConfig()
+	return await execute(config)
+}
+
 const execute = async (config: FeedConfigSchema) => {
 	const command = {
 		servo1Ms: Number(config.servo1Ms),
@@ -24,6 +29,7 @@ const execute = async (config: FeedConfigSchema) => {
 	}
 
 	await espWebsocket.broadcast({ name: "Feed", data: [command], query: "Create" })
+	return command
 }
 
 const notifyUsers = async (level: number, config: FeedConfigSchema) => {
@@ -51,4 +57,4 @@ const findOrCreateConfig = async () => {
 
 //
 
-export default { evaluate, execute, isSatisfied }
+export default { evaluate, execute, test, isSatisfied }

@@ -32,6 +32,11 @@ const post: RequestHandler = async (req, res, next) => {
 	await feedModule.evaluate(feed.level)
 }
 
+const test: RequestHandler = async (req, res, next) => {
+	const command = await feedModule.test()
+	res.send({ command })
+}
+
 const patch: RequestHandler = async (req, res, next) => {
 	const fid = req.params.fid as string
 	if (!fid) return res.status(400).send("Feed id required.")
@@ -58,4 +63,4 @@ const destroy: RequestHandler = async (req, res, next) => {
 
 //
 
-export default { get, post, patch, destroy }
+export default { get, post, test, patch, destroy }

@@ -7,6 +7,7 @@ import configRoute from "@/routes/config.route.js"
 import authMiddleware from "@/modules/auth/auth.middleware.js"
 import deviceRoute from "@/modules/devices/device.route.js"
 import powerRoute from "@/modules/power/power.route.js"
+import settingsRoute from "@/modules/settings/settings.route.js"
 import systemErrorRoute from "@/modules/system-error/system-error.route.js"
 
 //
@@ -20,6 +21,7 @@ router.use("/feed", feedRoute.router)
 router.use("/config", configRoute.router)
 router.use("/device", deviceRoute.router)
 router.use("/power", powerRoute.router)
+router.use("/settings", settingsRoute.router)
 router.use("/system-error", systemErrorRoute.router)
 
 //

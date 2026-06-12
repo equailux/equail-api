@@ -6,7 +6,6 @@ import { Mortality, mortalityAttributes, mortalityOptions } from "@/modules/mort
 import { Reading, readingAttributes, readingOptions } from "@/modules/readings/reading.model.js"
 import { User, userAttributes, userOptions } from "@/modules/auth/user.model.js"
 import { Settings, settingsAttributes, settingsOptions } from "@/modules/settings/settings.model.js"
-import { Remark, remarkAttributes, remarkOptions } from "@/modules/remarks/remark.model.js"
 import { Account, accountAttributes, accountOptions } from "@/modules/auth/account.model.js"
 import { Session, sessionAttributes, sessionOptions } from "@/modules/auth/session.model.js"
 import { Verification, verificationAttributes, verificationOptions } from "@/modules/auth/verification.model.js"
@@ -65,7 +64,6 @@ const boot = async () => {
 	Power.init(powerAttributes, powerOptions(sequelize))
 	PowerInterruption.init(powerInterruptionAttributes, powerInterruptionOptions(sequelize))
 	Reading.init(readingAttributes, readingOptions(sequelize))
-	Remark.init(remarkAttributes, remarkOptions(sequelize))
 	Sensor.init(sensorAttributes, sensorOptions(sequelize))
 	Settings.init(settingsAttributes, settingsOptions(sequelize))
 	SystemError.init(systemErrorAttributes, systemErrorOptions(sequelize))
@@ -75,14 +73,12 @@ const boot = async () => {
 	Action.belongsTo(Threshold, { as: "threshold", foreignKey: "thresholdId" })
 	Actuator.hasMany(Action, { foreignKey: "actuatorId", onDelete: "CASCADE" })
 	Capture.hasMany(Detection, { foreignKey: "captureId", onDelete: "CASCADE" })
-	Capture.hasMany(Remark, { foreignKey: "captureId", onDelete: "CASCADE" })
 	Condition.belongsTo(Threshold, { as: "threshold", foreignKey: "thresholdId" })
 	Detection.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
 	Detection.hasMany(Feed, { foreignKey: "detectionId", onDelete: "SET NULL" })
 	Device.belongsTo(User, { as: "user", foreignKey: "userId" })
 	Feed.belongsTo(Detection, { as: "detection", foreignKey: "detectionId" })
 	Reading.belongsTo(Sensor, { as: "sensor", foreignKey: "sensorId" })
-	Remark.belongsTo(Capture, { as: "capture", foreignKey: "captureId" })
 	Sensor.hasMany(Reading, { foreignKey: "sensorId", onDelete: "CASCADE" })
 	Sensor.hasMany(Threshold, { foreignKey: "sensorId", onDelete: "CASCADE" })
 	Threshold.belongsTo(Sensor, { as: "sensor", foreignKey: "sensorId" })

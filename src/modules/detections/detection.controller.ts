@@ -26,7 +26,8 @@ const post: RequestHandler = async (req, res, next) => {
     const cid = req.params.cid as string
     if (!cid) return res.status(400).send("Capture id required.")
 
-    const { data, error, success } = DetectionCreateSchema.safeParse(req.body)
+    const box = JSON.parse(req.body?.box)
+    const { data, error, success } = DetectionCreateSchema.safeParse({ ...req.body, box })
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
 
     const detection = await Detection.create({ ...data, captureId: Number(cid) })
@@ -37,7 +38,8 @@ const patch: RequestHandler = async (req, res, next) => {
     const did = req.params.did as string
     if (!did) return res.status(400).send("Detection id required.")
 
-    const { data, error, success } = DetectionUpdateSchema.safeParse(req.body)
+    const box = JSON.parse(req.body?.box)
+    const { data, error, success } = DetectionUpdateSchema.safeParse({ ...req.body, box })
     if (!success) return res.status(400).send(error.issues.at(0)?.message)
 
     const detection = await Detection.findByPk(did)

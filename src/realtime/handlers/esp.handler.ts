@@ -12,6 +12,11 @@ import { Action } from "@/modules/actions/action.model.js"
 import { Actuator } from "@/modules/actuators/actuator.model.js"
 import actionModule from "@/modules/actions/action.module.js"
 import systemErrorService, { type ReadingPayload } from "@/modules/system-error/system-error.service.js"
+import { Power } from "@/modules/power/power.model.js"
+import { PowerCreateSchema } from "@/modules/power/power.schema.js"
+import powerService from "@/modules/power/power.service.js"
+import { PowerInterruptionCreateSchema } from "@/modules/power/interruption/power.interruption.schema.js"
+import powerInterruptionService from "@/modules/power/interruption/power.interruption.service.js"
 import z from "zod"
 
 //
@@ -72,4 +77,31 @@ const onCreateReading: WsEventHandler<ReadingCreateSchema & { tag: string }> = a
 	await Promise.all(aamapped.map(a => actionModule.execute(a, a.actuator!))).catch(console.error)
 }
 
-export default { onCreateReading }
+const onCreatePower: WsEventHandler<PowerCreateSchema> = async data => {
+	if (!data.length) return
+
+	const parsed = z.array(PowerCreateSchema).parse(data)
+	const powers = await Power.bulkCreate(parsed, { returning: true })
+	const values = powers.map(power => power.dataValues)
+
+	await appWebsocket.broadcast({ name: "Power", query: "Create", data: values })
+	await Promise.all(powers.map(power => powerService.evaluate(power.level)))
+}
+
+const onCreatePowerInterruption: WsEventHandler<PowerInterruptionCreateSchema> = async data => {
+	if (!data.length) return
+
+	const parsed = z.array(PowerInterruptionCreateSchema).parse(data)
+	const powerInterruptions = []
+
+	for (const interruption of parsed) {
+		const powerInterruption = await powerInterruptionService.evaluate(interruption.powered)
+		powerInterruptions.push(powerInterruption.dataValues)
+	}
+
+	await appWebsocket.broadcast({ name: "PowerInterruption", query: "Create", data: powerInterruptions })
+}
+
+//
+
+export default { onCreateReading, onCreatePower, onCreatePowerInterruption }

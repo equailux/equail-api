@@ -4,7 +4,17 @@ import firebaseService from "@/shared/services/firebase.service.js"
 
 //
 
-const evaluate = async (powered: boolean) => {
+let evaluationQueue = Promise.resolve()
+
+//
+
+const evaluate = (powered: boolean) => {
+	const evaluation = evaluationQueue.then(() => createAndNotify(powered))
+	evaluationQueue = evaluation.then(() => undefined, () => undefined)
+	return evaluation
+}
+
+const createAndNotify = async (powered: boolean) => {
 	const previous = await PowerInterruption.findOne({
 		attributes: ["powered"],
 		order: [

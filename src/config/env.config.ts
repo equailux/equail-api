@@ -50,6 +50,7 @@ const env = {
         host: process.env.DATABASE_HOST || "",
         port: Number(process.env.DATABASE_PORT),
         name: process.env.DATABASE_NAME || "",
+        log: process.env.DATABASE_LOG === "true",
         sync: process.env.DATABASE_SYNC === "true",
         alter: process.env.DATABASE_ALTER === "true",
         force: process.env.DATABASE_FORCE === "true",

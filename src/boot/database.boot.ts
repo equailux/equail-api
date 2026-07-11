@@ -30,16 +30,16 @@ import {
 
 const boot = async () => {
 	if (!env.boot.database) return console.info(`Database boot skipped.`)
-	const { user, pass, host, port, name, dialect, certificate } = env.database
+	const { user, pass, host, port, log, name, dialect, certificate } = env.database
 	const url = `${dialect}://${user}:${pass}@${host}:${port}`
 
-	const rawsqlize = new Sequelize(url, { logging: false })
+	const rawsqlize = new Sequelize(url, { logging: log && console.log })
 	await rawsqlize.query(`CREATE DATABASE IF NOT EXISTS \`${name}\`;`)
 	console.info("Database connected and checked.")
 
 	const ca = Buffer.from(certificate ?? "", "base64").toString()
 	const options: Options = { ...(!!certificate && { dialectOptions: { ssl: { ca } } }) }
-	const sequelize = new Sequelize(`${url}/${name}`, { ...options, logging: false })
+	const sequelize = new Sequelize(`${url}/${name}`, { ...options, logging: log && console.log })
 
 	// --- Better-Auths
 	User.init(userAttributes, userOptions(sequelize))

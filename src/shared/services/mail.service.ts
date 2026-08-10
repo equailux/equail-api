@@ -7,19 +7,21 @@ let transporter = undefined as ReturnType<typeof nodemailer.createTransport> | u
 //
 
 const connect = async (address: string, password: string) => {
-    transporter = nodemailer.createTransport({
-        auth: { user: address, pass: password },
-        secure: true,
-        service: "gmail",
-    })
+    return;
+    // transporter = nodemailer.createTransport({
+    //     auth: { user: address, pass: password },
+    //     secure: true,
+    //     service: "gmail",
+    // })
     
-    await transporter.verify()
-    return transporter
+    // await transporter.verify()
+    // return transporter
 }
 
 const sendMail = async (options: SendMailOptions) => {
-    if (!transporter) throw new Error("Mail transporter is not initialized.")
-    return await transporter.sendMail(options)
+    return;
+    // if (!transporter) throw new Error("Mail transporter is not initialized.")
+    // return await transporter.sendMail(options)
 }
 
 //

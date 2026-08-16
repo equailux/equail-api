@@ -20,7 +20,15 @@ const get = async (data: SystemErrorFilters) => {
 	const createdAt = { ...(alpha && { [Op.gte]: alpha }), ...(omega && { [Op.lte]: omega }) }
 	if (Object.keys(createdAt).length) where.createdAt = createdAt
 
-	return SystemError.findAll({ where, raw: true, limit, offset })
+	const { rows, count } = await SystemError.findAndCountAll({
+		where,
+		raw: true,
+		limit,
+		offset,
+		order: [["createdAt", "DESC"]],
+	})
+
+	return { rows, total: count }
 }
 
 const log = async (data: SystemErrorCreateSchema) => {

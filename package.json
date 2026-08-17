@@ -9,6 +9,7 @@
 		"start": "node --env-file .env dist/index.js",
 		"dev:stage": "tsx --env-file .env.staging src/index.ts",
 		"start:stage": "node --env-file .env.staging dist/index.js",
+		"seed": "node --env-file .env scripts/seed.mjs",
 		"build": "tsc --listEmittedFiles && tsc-alias --verbose",
 		"format": "prettier --write ."
 	},

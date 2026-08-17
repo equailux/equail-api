@@ -1,6 +1,7 @@
 import { Device } from "@/modules/devices/device.model.js"
 import { FeedConfig } from "@/modules/feed/config/feed.config.model.js"
 import { FeedConfigDefaults, FeedConfigSchema } from "@/modules/feed/config/feed.config.schema.js"
+import { FeedManualSchema } from "@/modules/feed/feed.schema.js"
 import espWebsocket from "@/realtime/websockets/esp.websocket.js"
 import firebaseService from "@/shared/services/firebase.service.js"
 
@@ -19,6 +20,16 @@ const evaluate = async (level: number) => {
 const test = async () => {
 	const config = await findOrCreateConfig()
 	return await execute(config)
+}
+
+const manual = async (input: FeedManualSchema) => {
+	const command = {
+		direction: input.direction === "Forward" ? 1 : -1,
+		durationMs: Number(input.durationMs),
+	}
+
+	await espWebsocket.broadcast({ name: "FeedManual", data: [command], query: "Create" })
+	return command
 }
 
 const execute = async (config: FeedConfigSchema) => {
@@ -57,4 +68,4 @@ const findOrCreateConfig = async () => {
 
 //
 
-export default { evaluate, execute, test, isSatisfied }
+export default { evaluate, execute, test, manual, isSatisfied }

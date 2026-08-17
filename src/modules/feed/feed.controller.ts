@@ -1,5 +1,5 @@
 import { Feed } from "@/modules/feed/feed.model.js"
-import { FeedCreateSchema, FeedQuerySchema, FeedUpdateSchema } from "@/modules/feed/feed.schema.js"
+import { FeedCreateSchema, FeedManualSchema, FeedQuerySchema, FeedUpdateSchema } from "@/modules/feed/feed.schema.js"
 import feedModule from "@/modules/feed/feed.module.js"
 import { PaginationSchema } from "@/shared/schemas/pagination.schema.js"
 import { type RequestHandler } from "express"
@@ -37,6 +37,14 @@ const test: RequestHandler = async (req, res, next) => {
 	res.send({ command })
 }
 
+const manual: RequestHandler = async (req, res, next) => {
+	const { data, error, success } = FeedManualSchema.safeParse(req.body)
+	if (!success) return res.status(400).send(error.issues.at(0)?.message)
+
+	const command = await feedModule.manual(data)
+	res.send({ command })
+}
+
 const patch: RequestHandler = async (req, res, next) => {
 	const fid = req.params.fid as string
 	if (!fid) return res.status(400).send("Feed id required.")
@@ -63,4 +71,4 @@ const destroy: RequestHandler = async (req, res, next) => {
 
 //
 
-export default { get, post, test, patch, destroy }
+export default { get, post, test, manual, patch, destroy }

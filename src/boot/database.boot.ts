@@ -1,6 +1,7 @@
 import env from "@/config/env.config.js"
 import { Options, Sequelize } from "sequelize"
 import { Capture, captureAttributes, captureOptions } from "@/modules/captures/capture.model.js"
+import { CaptureConfig, captureConfigAttributes, captureConfigOptions } from "@/modules/captures/config/capture.config.model.js"
 import { Detection, detectionAttributes, detectionOptions } from "@/modules/detections/detection.model.js"
 import { Mortality, mortalityAttributes, mortalityOptions } from "@/modules/mortalities/mortality.model.js"
 import { Reading, readingAttributes, readingOptions } from "@/modules/readings/reading.model.js"
@@ -55,6 +56,7 @@ const boot = async () => {
 	Action.init(actionAttributes, actionOptions(sequelize))
 	Actuator.init(actuatorAttributes, actuatorOptions(sequelize))
 	Capture.init(captureAttributes, captureOptions(sequelize))
+	CaptureConfig.init(captureConfigAttributes, captureConfigOptions(sequelize))
 	Condition.init(conditionAttributes, conditionOptions(sequelize))
 	Detection.init(detectionAttributes, detectionOptions(sequelize))
 	Device.init(deviceAttributes, deviceOptions(sequelize))

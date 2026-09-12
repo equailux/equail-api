@@ -6,6 +6,7 @@ import { type RequestHandler } from "express"
 import { Op } from "sequelize"
 import env from "@/config/env.config.js"
 import cloudinaryService from "@/shared/services/cloudinary.service.js"
+import captureModule from "@/modules/captures/capture.module.js"
 
 //
 
@@ -68,6 +69,13 @@ const destroy: RequestHandler = async (req, res, next) => {
 
 //
 
+const trigger: RequestHandler = async (req, res, next) => {
+    const command = await captureModule.trigger()
+    res.send({ command })
+}
+
+//
+
 const getImage: RequestHandler = async (req, res, next) => {
     const filename = req.params.filename as string
     if (!filename) return res.status(404).send("Capture image filename expected.")
@@ -89,4 +97,4 @@ const getImage: RequestHandler = async (req, res, next) => {
 
 //
 
-export default { get, post, patch, destroy, getImage }
+export default { get, post, patch, destroy, trigger, getImage }

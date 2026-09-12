@@ -14,6 +14,7 @@ import cloudflared from "@/boot/cloudflared.boot.js"
 import websocketService from "@/shared/services/websocket.service.js"
 import settings from "@/boot/settings.boot.js"
 import feed from "@/boot/feed.boot.js"
+import capture from "@/boot/capture.boot.js"
 import esp from "@/boot/esp.boot.js"
 import app from "@/boot/app.boot.js"
 import cloudinary from "@/boot/cloudinary.boot.js"
@@ -28,6 +29,7 @@ await database.boot()
 await firebase.boot()
 await settings.boot()
 await feed.boot()
+await capture.boot()
 await admin.boot()
 await mail.boot()
 await cloudflared.boot()

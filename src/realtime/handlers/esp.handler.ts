@@ -63,7 +63,12 @@ const onCreateReading: WsEventHandler<ReadingCreateSchema & { tag: string }> = a
 	const cprms = rwtwcmapped.map(r => r.conditions.map(c => conditionModule.evaluate(c, r.value))).flat()
 
 	const [evaluated] = await Promise.all([Promise.all(tprms), Promise.all(cprms).catch(console.error)])
-	const activated = evaluated.filter(e => e.activated)
+
+	// --- Keep only the thresholds that just turned on. `thresholds` was read before
+	// evaluation, so it still holds the previous state. Filtering on `activated` alone
+	// re-fires the actions on every reading for as long as the threshold stays on, which
+	// re-arms the action duration over and over.
+	const activated = evaluated.filter(e => e.activated && !thresholds.find(t => t.id == e.id)?.activated)
 
 	// --- Get actions and actuators of the activated thresholds
 	const atids = activated.map(a => a.id as number)

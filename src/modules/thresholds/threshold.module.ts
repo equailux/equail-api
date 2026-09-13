@@ -28,6 +28,8 @@ const notifyUsers = async (threshold: ThresholdSchema) => {
 
 	const devices = await Device.findAll({ attributes: ["token"], raw: true })
 	const tokens = devices.map(device => device.token).filter(Boolean)
+	if (!tokens.length) return
+
 	await firebaseService.fcm.sendEachForMulticast({ tokens, notification: { title: threshold.name, body: threshold.message } })
 }
 

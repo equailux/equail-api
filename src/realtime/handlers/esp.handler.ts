@@ -49,7 +49,9 @@ const onCreateReading: WsEventHandler<ReadingCreateSchema & { tag: string }> = a
 	const conditions = await Condition.findAll({ where: { thresholdId: { [Op.in]: tids } }, raw: true })
 
 	// --- Map readings, thresholds, and conditions
-	const rwtmapped = readings.map(r => ({ ...r, threshold: thresholds.find(t => t.sensorId == r.sensorId) }))
+	// Note: map over `values` (dataValues), not the model instances. Spreading a Sequelize
+	// instance copies its internals, not its attributes, so `r.value` would be undefined.
+	const rwtmapped = values.map(r => ({ ...r, threshold: thresholds.find(t => t.sensorId == r.sensorId) }))
 	const rwtfiltered = rwtmapped.filter(r => !!r.threshold)
 	const rwtwcmapped = rwtfiltered.map(r => ({
 		...r,
@@ -57,13 +59,10 @@ const onCreateReading: WsEventHandler<ReadingCreateSchema & { tag: string }> = a
 	}))
 
 	// --- Evaluate thresholds and conditions
-	const tprms = rwtwcmapped.map(r => thresholdModule.evaluate(r.threshold!, r.conditions, r.value))
+	const tprms = rwtwcmapped.map(async r => ({ ...r.threshold, activated: await thresholdModule.evaluate(r.threshold!, r.conditions, r.value) }))
 	const cprms = rwtwcmapped.map(r => r.conditions.map(c => conditionModule.evaluate(c, r.value))).flat()
-	await Promise.all([tprms, cprms].flat()).catch(console.error)
 
-	// --- Evaluate thresholds without side effect
-	const evalprms = rwtwcmapped.map(async r => ({ ...r.threshold, activated: await thresholdModule.evaluate(r.threshold!, r.conditions, r.value) }))
-	const evaluated = await Promise.all(evalprms)
+	const [evaluated] = await Promise.all([Promise.all(tprms), Promise.all(cprms).catch(console.error)])
 	const activated = evaluated.filter(e => e.activated)
 
 	// --- Get actions and actuators of the activated thresholds

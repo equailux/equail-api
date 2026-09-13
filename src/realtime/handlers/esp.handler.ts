@@ -51,15 +51,17 @@ const onCreateReading: WsEventHandler<ReadingCreateSchema & { tag: string }> = a
 	// --- Map readings, thresholds, and conditions
 	// Note: map over `values` (dataValues), not the model instances. Spreading a Sequelize
 	// instance copies its internals, not its attributes, so `r.value` would be undefined.
-	const rwtmapped = values.map(r => ({ ...r, threshold: thresholds.find(t => t.sensorId == r.sensorId) }))
-	const rwtfiltered = rwtmapped.filter(r => !!r.threshold)
-	const rwtwcmapped = rwtfiltered.map(r => ({
+	// A sensor can own several thresholds, so fan out one pair per threshold instead of
+	// picking the first match. `find` left every other threshold on the sensor unevaluated,
+	// so it never activated, never notified, and never ran its actions.
+	const rwtmapped = values.flatMap(r => thresholds.filter(t => t.sensorId == r.sensorId).map(threshold => ({ ...r, threshold })))
+	const rwtwcmapped = rwtmapped.map(r => ({
 		...r,
-		conditions: conditions.filter(c => c.thresholdId == r.threshold!.id),
+		conditions: conditions.filter(c => c.thresholdId == r.threshold.id),
 	}))
 
 	// --- Evaluate thresholds and conditions
-	const tprms = rwtwcmapped.map(async r => ({ ...r.threshold, activated: await thresholdModule.evaluate(r.threshold!, r.conditions, r.value) }))
+	const tprms = rwtwcmapped.map(async r => ({ ...r.threshold, activated: await thresholdModule.evaluate(r.threshold, r.conditions, r.value) }))
 	const cprms = rwtwcmapped.map(r => r.conditions.map(c => conditionModule.evaluate(c, r.value))).flat()
 
 	const [evaluated] = await Promise.all([Promise.all(tprms), Promise.all(cprms).catch(console.error)])

@@ -1,6 +1,7 @@
 import { Feed } from "@/modules/feed/feed.model.js"
 import { FeedCreateSchema, FeedManualSchema, FeedQuerySchema, FeedUpdateSchema } from "@/modules/feed/feed.schema.js"
 import feedModule from "@/modules/feed/feed.module.js"
+import appWebsocket from "@/realtime/websockets/app.websocket.js"
 import { PaginationSchema } from "@/shared/schemas/pagination.schema.js"
 import { type RequestHandler } from "express"
 import { Op } from "sequelize"
@@ -19,7 +20,7 @@ const get: RequestHandler = async (req, res, next) => {
 	const createdAt = { ...(alpha && { [Op.gte]: alpha }), ...(omega && { [Op.lte]: omega }) }
 	if (Object.keys(createdAt).length) where.createdAt = createdAt
 
-	const feeds = await Feed.findAll({ where, raw: true, limit, offset })
+	const feeds = await Feed.findAll({ where, raw: true, limit, offset, order: [["createdAt", "DESC"], ["id", "DESC"]] })
 	res.send(feeds)
 }
 
@@ -29,6 +30,7 @@ const post: RequestHandler = async (req, res, next) => {
 
 	const feed = await Feed.create(data)
 	res.send(feed.dataValues)
+	await appWebsocket.broadcast({ name: "Feed", query: "Create", data: [feed.dataValues] })
 	await feedModule.evaluate(feed.level)
 }
 
